@@ -2,6 +2,17 @@
 #include <SFML/Graphics.hpp>
 using namespace std;
 using namespace sf;
+void animate(RenderWindow& window, Event& event, Sprite & spaceShip)
+{
+    int shipX = 320, shipY = 750;
+    while (spaceShip.getPosition().y > -20) {
+        window.clear();
+        spaceShip.setPosition(shipX, shipY);
+        window.draw(spaceShip);
+        spaceShip.move(shipX, shipY -= 10);
+        window.display();
+    }
+}
 void boxFillColor(Vector2i mousePos, RectangleShape & shape, int y_i, int y_f, int x_i, int x_f)// i = initial position & f = final position
 {
     if (mousePos.y >= y_i && mousePos.y <= y_f && mousePos.x >= x_i && mousePos.x <= x_f)// it will hihlight or change colour of text whenever mouse cursor will be on it
@@ -54,7 +65,18 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     text_4.setPosition(Vector2f(255.0f, 455.0f));
     textFillColor(mousePos, text_4, 455, 515, 255, 566);
     window.draw(text_4);
-
+    static Sprite spaceShip;   // creates ship which will move left write in main screen
+    static Texture texShip;     // static used to avoid redeclaration and redifination of ship every time loop reiterrates
+    texShip.loadFromFile("sec_ship.png");     
+    spaceShip.setTexture(texShip);
+    static int shipX = 350, shipY = 700;  // defining coordinates at end of window
+ 
+    spaceShip.setPosition(shipX, shipY); 
+    static int moveShip = 5;      // will move ship by 5 coordinates
+    if (spaceShip.getPosition().x<170|| spaceShip.getPosition().x >490) moveShip *= -1;   // when reaches one end, will help in changing the moving position of ship to other side
+    spaceShip.move(moveShip, 0);
+    shipX = shipX + moveShip;    // updates the x axis so that when loop reiterates in main, setposition donot reinitailizes at the centre
+    window.draw(spaceShip);
     // below will get mouse input and update menuchoice accoring click for next screen
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
@@ -64,7 +86,7 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
         if (mousePos.y >= 345.0f && mousePos.y <= 405.0f && mousePos.x >= 330.0f && mousePos.x <= 566.0f) mainMenuChoice = 3;
         if (mousePos.y >= 455.0f && mousePos.y <= 515.0f && mousePos.x >= 255.0f && mousePos.x <= 566.0f) mainMenuChoice = 4;
     }
-
+    if(mainMenuChoice!=0)  animate(window, event, spaceShip);
 
 }
 void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & modeMenuChoice)
@@ -131,7 +153,10 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
 
 
 }
+void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int& selectionMenuChoice)
+{
 
+}
 
 
 
