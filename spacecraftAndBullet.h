@@ -31,7 +31,7 @@ public:
 	bool getReached();
 	sf::Sprite getSprite();
 	virtual void moveToInitial() = 0;//all types of crafts have specific movement from origin to x_final&y_final
-	void draw();
+	void draw(RenderWindow& window);
 	virtual ~Spacecraft();
 
 };
@@ -105,7 +105,7 @@ public:
 	sf::Sprite getSprite();
 	void move();
 	bool isOutOfScope();//return true is bullet has ggone out of window
-	void draw();
+	void draw(RenderWindow& window);
 };
 
 class Powerup {//will give a shield to the usercraft
@@ -118,5 +118,5 @@ public:
 	void setAlive();
 	bool getAlive();//needed to be popped out of vector
 	void move();
-	void draw();
+	void draw(RenderWindow& window);
 };

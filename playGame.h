@@ -28,10 +28,13 @@ class PLayGame {
 
 public:
 
-	PLayGame(bool mode);
+	PLayGame(bool mode);//starts with level 0 for beginner & 2 for expert
+	void setSpeed();
 	bool formationIsKilled();//if formation is killed, level is incremented
 	void fillArr();//fills formation[][] according to level every 30sec
 	void moveBullets();//calss move of all bullets and destroyes all bullets that are out of scope of window
-	void play();//main method where game is played;
+	void draw(RenderWindow& window);
+	void play(RenderWindow&window,Event&event);//main method where game is played;
 	~PLayGame();//should empty all the vectors and delete player and bigBoss
+
 };
