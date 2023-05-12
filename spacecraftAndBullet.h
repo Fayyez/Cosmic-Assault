@@ -15,41 +15,68 @@ class Spacecraft {
 	   type 3 = enemy craft green
 	   type 4 = enemy craft dragon */
 
-	bool reached;//will return true when enemycraft has reached final position
+	bool reached;//will return true when craft has reached final position
 	sf::Texture scTexture;
 	sf::Sprite scSprite;
-
 public:
 	Spacecraft(int x, int y, int xFinal, int yFinal, string fileName, int health);
 	void setX(int x);
 	void setY(int y);
 	void setHealth(int h);
 	void setSprite(string fileName);
+	void setReached();
 	int getX();
 	int getY();
 	int getHealth();
+	bool getReached();
 	sf::Sprite getSprite();
-	virtual void moveToInitial() = 0;
+	virtual void moveToInitial() = 0;//all types of crafts have specific movement from origin to x_final&y_final
+	virtual ~Spacecraft();
 };
 
 class Usercraft : public Spacecraft {
 public:
-	Usercraft(int x, int y, int xFinal, int yFinal, string fileName);
+	Usercraft(int x, int y, int xFinal, int yFinal);
 	void moveTo(int x, int y);
 	void moveToInitial();
+	~Usercraft();
 };
 
 class EnemyCraft: public Spacecraft {
-	int path;
 public:
-	EnemyCraft(int x, int y, int xFinal, int yFinal, string fileName);
+	EnemyCraft(int x, int y, int xFinal, int yFinal, string fileName, int health);
 	void moveToInitial();
+	~EnemyCraft();
+};
+
+//red blue and green are three types of enemies who will have different starting position at time of creation
+//and different healths
+class EnemyRed : public EnemyCraft {
+public:
+	EnemyRed(int xFinal, int yFinal);
+	void moveToInitial();
+	~EnemyRed();
+};
+
+class EnemyBlue : public EnemyCraft {
+public:
+	EnemyBlue(int xFinal, int yFinal);
+	void moveToInitial();
+	~EnemyBlue();
+};
+
+class EnemyGreen : public EnemyCraft {
+public:
+	EnemyGreen(int xFinal, int yFinal);
+	void moveToInitial();
+	~EnemyGreen();
 };
 
 class BigBoss: public Spacecraft {
 public:
 	BigBoss(int x, int y, int xFinal, int yFinal, string fileName);
 	void moveToInitial();
+	~BigBoss();
 };
 
 class Bullet {
@@ -76,4 +103,11 @@ public:
 	sf::Sprite getSprite();
 	void move();
 	bool isOutOfScope();//return true is bullet has ggone out of window
+};
+
+class Powerup {//will give a shield to the usercraft
+	int xCord;
+	int yCord;
+	sf::Texture upTexture;
+	sf::Sprite upSprite;
 };
