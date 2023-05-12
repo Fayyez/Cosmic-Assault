@@ -155,8 +155,50 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
 }
 void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int& selectionMenuChoice)
 {
+   
+}
+void welcomeScreen(RenderWindow& window)
+{
+    RectangleShape initial_background;   // background adjust to rectangle shape to be on full window
+    Texture  i_background;
+    i_background.loadFromFile("welcome.png");
+    initial_background.setTexture(&i_background);
+    initial_background.setSize(Vector2f(900.0f, 900.0f));    // setting according to window size
+    initial_background.setTexture(&i_background);
+    int moveCosmic=5, moveAssault=-7;    // first one will move cosmic sprite to right, 2nd will move assault sprite to left
+    Sprite cosmic;
+    Texture cos;
+    cos.loadFromFile("cosmic.png");
+    cosmic.setTexture(cos);
+    cosmic.setPosition(-30,250);
+    Sprite assault;
+    Texture assau;
+    assau.loadFromFile("assault.png");
+    assault.setTexture(assau);
+    assault.setPosition(800, 370);
+
+
+    while (true) {  // will run untill welcome screen completes
+
+        window.clear();
+        window.draw(initial_background);
+        window.draw(cosmic);
+        window.draw(assault);
+       
+        if (cosmic.getPosition().x > 250 && cosmic.getPosition().x < 270) // when reached at centre, will pause for a second and go away immediately and new screen pop ups
+        {
+            sleep(milliseconds(1000));
+            moveCosmic = 25, moveAssault = -25;
+        }
+        cosmic.move(moveCosmic, 0);
+        assault.move(moveAssault, 0);
+        window.display();
+        if (cosmic.getPosition().x >= 800) break;        // will break when both sprites will moveout of window
+
+    }
+
+
 
 }
-
 
 

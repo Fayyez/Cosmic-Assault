@@ -10,6 +10,7 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice);
 void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & modeMenuChoice);
 void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice,int & selectionMenuChoice);
 void animate(RenderWindow& window, Event& event, Sprite spaceShip);
+void welcomeScreen( RenderWindow &  window);
     
 
 
