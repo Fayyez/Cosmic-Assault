@@ -9,6 +9,7 @@ using namespace sf;
 using namespace std;
 
 class PLayGame {
+
 	int score;//stores current score of user, adds 50 for every successful kill
 	int currentLevel;//it starts with level 0 and is incrementd for each enemy formation that is called
 	int speedOfFormation;//speed of movement of enemy formation {is higher for expert mode}; increasing every 30s
@@ -48,7 +49,7 @@ public:
 	void moveBullets();//calss move of all bullets and destroyes all bullets that are out of scope of window
 	void draw(RenderWindow& window);
 	void moveEnemies();//move the enemy formation and also saves the rightmost and leftmost enemy at any given time
-	bool checkCollisionWithAllBullets(EnemyCraft* craft);
+	bool checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window);
 	void play(RenderWindow&window,Event&event);//main method where game is played;
 	~PLayGame();//should empty all the vectors and delete player and bigBoss
 };

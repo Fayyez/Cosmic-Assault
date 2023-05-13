@@ -26,7 +26,7 @@ bool shouldFire(bool mode) {//returns true 10% of the time if status is true and
 	}
 
 }
-bool collides(Sprite& ship, Sprite& sprite2, RenderWindow& window, bool& bulletActive)
+bool collides(Sprite& ship, Sprite& sprite2, RenderWindow& window)
 {
 	// get the global bounds of the sprites
 	FloatRect sprite1 = ship.getGlobalBounds();
@@ -34,7 +34,6 @@ bool collides(Sprite& ship, Sprite& sprite2, RenderWindow& window, bool& bulletA
 
 	// check if the global bounds intersect
 	return (sprite1.intersects(bulletBounds));
-
 }
 
 //int score;//stores current score of user, adds 50 for every successful kill
@@ -141,31 +140,101 @@ void PLayGame::draw(RenderWindow& window);
 * draw score
 */
 void PLayGame::moveEnemies();//move the enemy formation and update direction if formation moved down
-bool PLayGame::checkCollisionWithAllBullets(EnemyCraft* craft) {//return true if spacecraft sprties collided with a bullet
-	for (Bullet* bullet : bulletArr) {
+bool PLayGame::checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window) {
+	//return true if spacecraft sprties collided with a bullet
 
+	for (int i = 0; i < bulletArr.size();i++) {
+		if (collides(craft->getSprite(), bulletArr[i]->getSprite(), window) && bulletArr[i]->getIsFriendly()) {
+			//returns true if any friendly bullet collides with that enemy craft
+			//remove the bullet from bulletArr & delete the pointer
+			if (bulletArr[i] != nullptr) {
+				delete bulletArr[i];
+				bulletArr[i] = nullptr;
+			}
+			bulletArr.erase(bulletArr.begin() + i);//pop out that bullet
+			i--;
+			return true;
+		}
 	}
+	return false;
 }
 void PLayGame::play(RenderWindow& window, Event& event) {
 
 	//untill not time for bigBoss
 	bool formationKilled = formationIsKilled();
 	if (!sessionCompleted() || !formationKilled) {
-		//under normal conditions
+	//if under normal conditions:
+
 		if (formationKilled) {//if enemies are not present on screen
 			createFormation();
 			//currentLevel++;
 		}
-		for (EnemyCraft * enemy : enemyArr) {
-			//check for bullet collision
-			//add check for reched
-            //movement
-			//fire bullets
-			checkCollisionWithAllBullets(enemy);
+
+		bool reached = true;//assume formaion has been formed
+		int currentSize = 0;//declared outside to be used as a size() for enemyArr;
+		for (; currentSize < enemyArr.size(); currentSize++) {
+			
+			//check for bullet collisions
+			if (checkCollisionWithAllBullets(enemyArr[currentSize], window)) {
+				//if collided with a friendly bullet
+				enemyArr[currentSize]->setHealth(enemyArr[currentSize]->getHealth() - 1);//decrease health
+			}
+			//check for collision with UserCraft
+			if (collides(player->getSprite(), enemyArr[currentSize]->getSprite(), window)) {
+				enemyArr[currentSize]->setHealth(0);//kill on collision with user
+				player->setHealth(player->getHealth() - 2);//user health is decreased bby 2 on impact with enemycraft
+			}
+
+			if (enemyArr[currentSize]->getHealth() <= 0) {//if enemy health == 0
+
+				if (enemyArr[currentSize] != nullptr) {
+					delete enemyArr[currentSize];
+					enemyArr[currentSize] = nullptr;
+				}
+				enemyArr.erase(enemyArr.begin() + currentSize);
+				currentSize--;
+			}
+			//if enemy formation is not complete
+		    if (!enemyArr[currentSize]->getReached()) { reached = false; }
+
 		}
+		///enemy movement & update leftmost lowest, etc///
+		if (!reached) {//enemy formation is not set yet
+			for (int j = 0; j < currentSize; j++) {
+
+			}
+		}
+
 	}
 	else {
 		//bring boss
 	}
 }
-PLayGame::~PLayGame() {}//should empty all the vectors and delete player and bigBoss
+PLayGame::~PLayGame() {
+
+	//deallocate bullets
+	for (int i = 0; i < bulletArr.size(); i++) {
+		delete bulletArr[i];
+		bulletArr[i] = nullptr;
+	}
+	//deallocate enemies
+	for (int i = 0; i < enemyArr.size(); i++) {
+		delete enemyArr[i];
+		enemyArr[i] = nullptr;
+	}
+	//deallocate powerups
+	for (int i = 0; i < powerupArr.size(); i++) {
+		delete powerupArr[i];
+		powerupArr[i] = nullptr;
+	}
+	if (player != nullptr) {
+		delete player;
+		player = nullptr;
+	}
+	if (wadiBala != nullptr) {
+		delete wadiBala;
+		wadiBala = nullptr;
+	}
+
+
+}
