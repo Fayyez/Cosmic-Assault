@@ -10,11 +10,6 @@ class Spacecraft {
 	int yCord;
 	int xFinal;
 	int yFinal;
-	int type;
-	/* type 1 = usercraft
-	   type 2 = enemy craft red
-	   type 3 = enemy craft green
-	   type 4 = enemy craft dragon */
 	bool reached;//will return true when craft has reached final position
 	sf::Texture scTexture;
 	sf::Sprite scSprite;
