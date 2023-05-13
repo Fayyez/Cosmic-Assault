@@ -69,7 +69,8 @@ void Usercraft::moveToInitial() {
         setY(getY() + dy * ratio);
         getSprite().setPosition(getX(), getY());
     }
-}//C
+    if (getX() == getXFinal() && getY() == getYFinal()) setReached(true);
+}
 Usercraft::~Usercraft() {}
 
 ///definitions for EnemyCraft///
@@ -91,6 +92,7 @@ void EnemyCraft::moveToInitial() {
         setY(getY() + dy * ratio);
         getSprite().setPosition(getX(), getY());
     }
+    if (getX() == getXFinal() && getY() == getYFinal()) setReached(true);
 }//C
 EnemyCraft::~EnemyCraft() {}
 
@@ -113,7 +115,8 @@ void EnemyRed::moveToInitial() {
         setY(getY() + dy * ratio);
         getSprite().setPosition(getX(), getY());
     }
-}//C health = 2
+    if (getX() == getXFinal() && getY() == getYFinal()) setReached(true);
+}//health = 2
 EnemyRed::~EnemyRed() {}
 
 ///definitions for enemyBlue///
@@ -135,6 +138,7 @@ void EnemyBlue::moveToInitial() {
         setY(getY() + dy * ratio);
         getSprite().setPosition(getX(), getY());
     }
+    if (getX() == getXFinal() && getY() == getYFinal()) setReached(true);
 }
 EnemyBlue::~EnemyBlue() {}
 
@@ -157,7 +161,8 @@ void EnemyGreen::moveToInitial() {
         setY(getY() + dy * ratio);
         getSprite().setPosition(getX(), getY());
     }
-}//C health = 1
+    if (getX() == getXFinal() && getY() == getYFinal()) setReached(true);
+}//health = 1
 EnemyGreen::~EnemyGreen() {}
 
 ///definitions for BigBoss///
@@ -177,6 +182,7 @@ void BigBoss::moveToInitial() {
         setY(getY() + dy * ratio);
         getSprite().setPosition(getX(), getY());
     }
+    if (getX() == getXFinal() && getY() == getYFinal()) setReached(true);
 }//C
 BigBoss::~BigBoss() {}
 
