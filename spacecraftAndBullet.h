@@ -1,11 +1,11 @@
 #pragma once
 #include<iostream>
 #include<SFML/Graphics.hpp>
+#include<cstring>
 using namespace std;
 
 class Spacecraft {
 	int health;
-	int time;
 	int xCord;
 	int yCord;
 	int xFinal;
@@ -19,7 +19,7 @@ public:
 	void setY(int y);
 	void setHealth(int h);
 	void setSprite(string fileName);
-	void setReached();
+	void setReached(bool status);
 	int getX();
 	int getY();
 	int getHealth();
@@ -33,13 +33,14 @@ public:
 
 class Usercraft : public Spacecraft {
 public:
-	Usercraft(int x, int y, int xFinal, int yFinal);
+	Usercraft(int x, int y, int xFinal, int yFinal, string fileName);
 	void moveTo(int x, int y);
 	void moveToInitial();
 	~Usercraft();
 };
 
 class EnemyCraft: public Spacecraft {
+	int time;
 public:
 	EnemyCraft(int x, int y, int xFinal, int yFinal, string fileName, int health);
 	void moveToInitial();
@@ -110,7 +111,8 @@ class Powerup {//will give a shield to the usercraft
 	sf::Texture upTexture;
 	sf::Sprite upSprite;
 public:
-	void setAlive();
+	Powerup(int x, int y, string fileName);
+	void setAlive(bool status);
 	bool getAlive();//needed to be popped out of vector
 	void move();
 	void draw(sf::RenderWindow& window);
