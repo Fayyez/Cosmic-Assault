@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "screens.h"
+#include <fstream>
 using namespace std;
 using namespace sf;
 int main()
@@ -12,7 +13,6 @@ int main()
     Event event;
     int mainMenuChoice = 0, selectionMenuChoice;
     bool modeMenuChoice = 0;
-
     while (window.isOpen())
     {
         static int i = 0;
@@ -62,29 +62,23 @@ int main()
         }
         else if (mainMenuChoice == 2)    // will go in leaderboard
         {
-
-
-
+            leaderBoard(window,event, mainMenuChoice);
             cout << mainMenuChoice << endl;
             mainMenuChoice = 0;
         }
         else if (mainMenuChoice == 3) // will go in credits screen
         {
-
-
-
+           string name = getPlayerName(window,event);
+           // endingScreen(window, event,"YOU LOST!");
+           // creditScreen(window, event, mainMenuChoice);
             cout << mainMenuChoice << endl;
             mainMenuChoice = 0;
-
         }
         else if (mainMenuChoice == 4) // will go to instruction screen
         {
-
-
-            
+            instructions(window, event, mainMenuChoice);
             cout << mainMenuChoice << endl; 
-            mainMenuChoice = 0;
-
+            //mainMenuChoice = 0;
         }
 
 

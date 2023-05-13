@@ -14,5 +14,9 @@ void welcomeScreen( RenderWindow &  window);
 void backgroundAnimation(RenderWindow & window);
 void exitButton(RenderWindow& window);
 void circleFillColor(Vector2i mousePos, CircleShape& shape, int y_i, int y_f, int x_i, int x_f);// i = initial position & f = final position
-
-
+void leaderBoard(RenderWindow& window, Event& event, int& mainMenuChoice);
+void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice);
+void instructions(RenderWindow& window, Event& event, int& mainMenuChoice);
+void displayHeading(RenderWindow& window, string heading);
+void endingScreen(RenderWindow& window, Event& event,string text);
+string getPlayerName(RenderWindow& window, Event& event);
