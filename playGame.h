@@ -24,7 +24,7 @@ class PLayGame {
 	* formation[][] is used as a reference for creating an enemy formation
 	* with its [row]&[column] defining the x_final & y_final of the enemy craft
 	*/	
-	BigBoss* wadiBala;//obj of bigbossis created only when timer has reached a limit of 2:30
+	BigBoss* wadiBala;//obj of bigbossis created only when user has passed 5 levels
 
 public:
 
@@ -36,5 +36,4 @@ public:
 	void draw(RenderWindow& window);
 	void play(RenderWindow&window,Event&event);//main method where game is played;
 	~PLayGame();//should empty all the vectors and delete player and bigBoss
-
 };

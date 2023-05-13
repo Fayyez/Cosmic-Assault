@@ -5,6 +5,7 @@ using namespace std;
 
 class Spacecraft {
 	int health;
+	int time;
 	int xCord;
 	int yCord;
 	int xFinal;
@@ -14,7 +15,6 @@ class Spacecraft {
 	   type 2 = enemy craft red
 	   type 3 = enemy craft green
 	   type 4 = enemy craft dragon */
-
 	bool reached;//will return true when craft has reached final position
 	sf::Texture scTexture;
 	sf::Sprite scSprite;
