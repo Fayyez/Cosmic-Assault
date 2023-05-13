@@ -25,29 +25,40 @@ int main()
             }
         }    
         window.clear();  
+        backgroundAnimation(window);
+
         if (mainMenuChoice == 0) {
-           
+
             mainScreen(window, event, mainMenuChoice);
         }
         if (mainMenuChoice == 1)     // it will go in mode menu
         {
+            bool openSelectionMenu = 0;
             modeMenu(window, event,mainMenuChoice,modeMenuChoice);
-            if (modeMenuChoice == 1) // for easy mode
+            if (modeMenuChoice) // for easy mode
             {
 
 
-
+                openSelectionMenu = 1;
             }
-            else if (modeMenuChoice == 2) // for expert mode
+            else if (!modeMenuChoice) // for expert mode
             {
 
 
-
+                openSelectionMenu = 1;
             }
-          //selectionMenu((window, event, mainMenuChoice, selectionMenuChoice);
+        
 
             cout << mainMenuChoice << endl;
            // choice = 1;
+        }
+        if (mainMenuChoice == 7) {
+            selectionMenu(window, event, mainMenuChoice, selectionMenuChoice);
+            cout << "sel menu\n";
+        }
+        if (mainMenuChoice == 8) {
+            //playingscreen(window, event, mainMenuChoice);
+            cout << "Play\n";
         }
         else if (mainMenuChoice == 2)    // will go in leaderboard
         {
@@ -75,7 +86,6 @@ int main()
             mainMenuChoice = 0;
 
         }
-
 
 
         window.display();

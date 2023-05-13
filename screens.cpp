@@ -2,6 +2,18 @@
 #include <SFML/Graphics.hpp>
 using namespace std;
 using namespace sf;
+void exitButton(RenderWindow& window)
+{
+    Vector2i mousePos;
+    mousePos = Mouse::getPosition(window);
+
+    Texture EBtexture;    // texture for exit button
+    EBtexture.loadFromFile("EXIT.png");
+    Sprite exitbutton;      // sprite fro exit button
+    exitbutton.setTexture(EBtexture);
+    exitbutton.setPosition(75.0f, 700.0f);   //defining posotion at down left corner
+    window.draw(exitbutton);
+}
 void animate(RenderWindow& window, Event& event, Sprite & spaceShip)
 {
     int shipX = 320, shipY = 750;
@@ -20,6 +32,15 @@ void boxFillColor(Vector2i mousePos, RectangleShape & shape, int y_i, int y_f, i
         shape.setFillColor(Color::Red);
     }
     else shape.setFillColor(Color::Green);
+
+}
+void circleFillColor(Vector2i mousePos, CircleShape& shape, int y_i, int y_f, int x_i, int x_f)// i = initial position & f = final position
+{
+    if (mousePos.y >= y_i && mousePos.y <= y_f && mousePos.x >= x_i && mousePos.x <= x_f)// it will hihlight or change colour of text whenever mouse cursor will be on it
+    {
+        shape.setFillColor(Color::Red);
+    }
+    else shape.setFillColor(Color::Cyan);
 
 }
 void textFillColor(Vector2i mousePos,Text & text, int y_i, int y_f, int x_i, int x_f)// i = initial position & f = final position
@@ -94,17 +115,11 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
     window.clear();   // clear the window to print this next screen
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
-    
-    Texture EBtexture;    // texture for exit button
-    EBtexture.loadFromFile("EXIT.png");
-    Sprite exitbutton;      // sprite fro exit button
-    exitbutton.setTexture(EBtexture);
-    exitbutton.setPosition(75.0f, 600.0f);   //defining posotion at down left corner
-    window.draw(exitbutton);
+    exitButton(window);
     // if clicks at exit button then moves to mainmenu screen
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) 
     {
-        if (mousePos.y >= 600.0f && mousePos.y <= 730.0f && mousePos.x >= 75.0f && mousePos.x <= 296.0f)
+        if (mousePos.y >= 700.0f && mousePos.y <= 830.0f && mousePos.x >= 75.0f && mousePos.x <= 296.0f)
         {
             mainMenuChoice = 0;
         }
@@ -145,17 +160,20 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
         mousePos = Mouse::getPosition(window);
-        if (mousePos.y >= 250.0f && mousePos.y <= 302.0f && mousePos.x >= 330.0f && mousePos.x <= 580.0f) modeMenuChoice = 0;
-        if (mousePos.y >= 350.0f && mousePos.y <= 400.0f && mousePos.x >= 330.0f && mousePos.x <= 580.0f) modeMenuChoice = 1;
+        if (mousePos.y >= 250.0f && mousePos.y <= 302.0f && mousePos.x >= 330.0f && mousePos.x <= 580.0f) {
+            modeMenuChoice = 0;
+            mainMenuChoice = 7;
+        }
+        if (mousePos.y >= 350.0f && mousePos.y <= 400.0f && mousePos.x >= 330.0f && mousePos.x <= 580.0f) {
+            modeMenuChoice = 1;
+            mainMenuChoice = 7;
+        }
+       
     }
 
 
 
 
-}
-void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int& selectionMenuChoice)
-{
-   
 }
 void welcomeScreen(RenderWindow& window)
 {
@@ -165,12 +183,12 @@ void welcomeScreen(RenderWindow& window)
     initial_background.setTexture(&i_background);
     initial_background.setSize(Vector2f(900.0f, 900.0f));    // setting according to window size
     initial_background.setTexture(&i_background);
-    int moveCosmic=5, moveAssault=-7;    // first one will move cosmic sprite to right, 2nd will move assault sprite to left
+    int moveCosmic = 5, moveAssault = -7;    // first one will move cosmic sprite to right, 2nd will move assault sprite to left
     Sprite cosmic;
     Texture cos;
     cos.loadFromFile("cosmic.png");
     cosmic.setTexture(cos);
-    cosmic.setPosition(-30,250);
+    cosmic.setPosition(-30, 250);
     Sprite assault;
     Texture assau;
     assau.loadFromFile("assault.png");
@@ -184,7 +202,7 @@ void welcomeScreen(RenderWindow& window)
         window.draw(initial_background);
         window.draw(cosmic);
         window.draw(assault);
-       
+
         if (cosmic.getPosition().x > 250 && cosmic.getPosition().x < 270) // when reached at centre, will pause for a second and go away immediately and new screen pop ups
         {
             sleep(milliseconds(1000));
@@ -196,6 +214,89 @@ void welcomeScreen(RenderWindow& window)
         if (cosmic.getPosition().x >= 800) break;        // will break when both sprites will moveout of window
 
     }
+
+
+
+}
+void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int& selectionMenuChoice)
+{
+    window.clear();   // clear the window to print this next screen
+    Vector2i mousePos;
+    mousePos = Mouse::getPosition(window);
+    exitButton(window);
+    // if clicks at exit button then moves to mainmenu screen
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+    {
+        if (mousePos.y >= 700.0f && mousePos.y <= 830.0f && mousePos.x >= 75.0f && mousePos.x <= 296.0f)
+        {
+            mainMenuChoice = 0;
+        }
+    }
+     Font font;
+    font.loadFromFile("res/Icecold.ttf");
+    CircleShape choice1, choice2,choice3;  // rectangle shapes for options of 2 modes as easy and hard
+    choice1.setRadius(100);
+    choice1.setOutlineThickness(5.f);
+    choice1.setOutlineColor(Color::Red);
+    //choice1.setSize(Vector2f(150.0f, 150.0f));  // size for recatngle box 
+    choice1.setFillColor(Color::Cyan);       // size of rectangle box 
+    choice1.setPosition(Vector2f(130.0f, 250.0f));
+    circleFillColor(mousePos, choice1, 250, 450, 130, 330);// fill mode1 which is a box, with red colour when cursor is places
+    //mode1.setPosition
+    window.draw(choice1); Sprite ship1;
+    Texture tShip1;
+    tShip1.loadFromFile("s_ship.png");
+    ship1.setTexture(tShip1);
+    ship1.setPosition(Vector2f(190.0f, 300.0f));
+    window.draw(ship1);
+
+    choice2.setRadius(100);
+    choice2.setOutlineThickness(5.f);
+    choice2.setOutlineColor(Color::Red);
+   // choice2.setSize(Vector2f(150.0f, 150.0f));  // size for recatngle box 
+    choice2.setFillColor(Color::Cyan);       // size of rectangle box 
+    choice2.setPosition(Vector2f(360.0f, 250.0f));
+    circleFillColor(mousePos, choice2, 250, 450, 360, 560);// fill mode1 which is a box, with red colour when cursor is places
+    //mode1.setPosition
+    window.draw(choice2);
+    Sprite ship2;
+    Texture tShip2;
+    tShip2.loadFromFile("s_ship.png");
+    ship2.setTexture(tShip2);
+    ship2.setPosition(Vector2f(418.5f, 300.0f));
+    window.draw(ship2);
+
+    choice3.setRadius(100);
+    choice3.setOutlineThickness(5.f);
+    choice3.setOutlineColor(Color::Red);
+    //choice3.setSize(Vector2f(150.0f, 150.0f));  // size for recatngle box 
+    choice3.setFillColor(Color::Cyan);       // size of rectangle box 
+    choice3.setPosition(Vector2f(590.0f, 250.0f));
+    circleFillColor(mousePos, choice3, 250, 450, 590, 790);// fill mode1 which is a box, with red colour when cursor is places
+    //mode1.setPosition
+    window.draw(choice3);
+    Sprite ship3;
+    Texture tShip3;
+    tShip3.loadFromFile("s_ship.png");
+    ship3.setTexture(tShip3);
+    ship3.setPosition(Vector2f(650.0f, 300.0f));
+    window.draw(ship3);
+    window.waitEvent(event);
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+    {
+        mousePos = Mouse::getPosition(window);
+        if (mousePos.y >= 250.0f && mousePos.y <= 450.0f && mousePos.x >= 130.0f && mousePos.x <= 330.0f) mainMenuChoice = 8;
+        if (mousePos.y >= 250.0f && mousePos.y <= 450.0f && mousePos.x >= 360.0f && mousePos.x <= 560.0f) mainMenuChoice = 8;
+        if (mousePos.y >= 250.0f && mousePos.y <= 450.0f && mousePos.x >= 590.0f && mousePos.x <= 790.0f) mainMenuChoice = 8;
+    }
+
+}
+void backgroundAnimation(RenderWindow& window)
+{
+  
+    
+
+
 
 
 
