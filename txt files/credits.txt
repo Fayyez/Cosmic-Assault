@@ -1,0 +1,20 @@
+Cosmic Assault
+Developed by:
+Muhammad Danish
+Eehab Saadat
+Fayyez Farrukh
+Special Mention:
+TA Ahmad
+Thank You:
+Advisor:
+Usama Hassan ALvi
+We would like to thank our professor for his guidance and support throughout the development of this game.
+Soundtrack:
+All sound effects and music used in this game are licensed under Creative Commons.
+Artwork:
+All artwork used in this game is licensed under Creative Commons.
+Version:
+1.0.0
+Copyright:
+© 2023, All rights reserved.
+Thank you for playing Cosmic Assault!

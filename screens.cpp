@@ -3,6 +3,26 @@
 #include <SFML/Graphics.hpp>
 using namespace std;
 using namespace sf;
+void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
+{
+    Vector2i mousePos;
+    mousePos = Mouse::getPosition(window);
+
+    Texture EBtexture;    // texture for exit button
+    EBtexture.loadFromFile("EXIT.png");
+    Sprite exitbutton;      // sprite fro exit button
+    exitbutton.setTexture(EBtexture);
+    exitbutton.setPosition(838.0f, 40.0f);   //defining posotion at down left corner
+    window.draw(exitbutton);
+    // if clicks at exit button then moves to mainmenu screen
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+    {
+        if (mousePos.y >= 40.0f && mousePos.y <= 100.0f && mousePos.x >= 838.0f && mousePos.x <= 898.0f)
+        {
+            mainMenuChoice = 0;
+        }
+    }
+}
 void displayHeading(RenderWindow & window, string heading)
 {
     Font font;
@@ -19,18 +39,6 @@ void displayHeading(RenderWindow & window, string heading)
     mode1.setFillColor(Color::Red);       // size of rectangle box 
     mode1.setPosition(Vector2f(0.0f, 120.0f));
     window.draw(mode1);
-}
-void exitButton(RenderWindow& window)
-{
-    Vector2i mousePos;
-    mousePos = Mouse::getPosition(window);
-
-    Texture EBtexture;    // texture for exit button
-    EBtexture.loadFromFile("EXIT.png");
-    Sprite exitbutton;      // sprite fro exit button
-    exitbutton.setTexture(EBtexture);
-    exitbutton.setPosition(75.0f, 700.0f);   //defining posotion at down left corner
-    window.draw(exitbutton);
 }
 void animate(RenderWindow& window, Event& event, Sprite & spaceShip)
 {
@@ -87,8 +95,8 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     Text text_2("LEADERBOARD", font, 50);   //  assigning string to text, setting font which is loaded and 25 is font size
     text_2.setOutlineThickness(2);
     text_2.setOutlineColor(Color::Red);
-    text_2.setPosition(Vector2f(255.0f, 295.0f));
-    textFillColor(mousePos, text_2, 295, 355, 255, 655);
+    text_2.setPosition(Vector2f(235.0f, 295.0f));
+    textFillColor(mousePos, text_2, 295, 355, 235, 635);
     window.draw(text_2);
 
 
@@ -136,43 +144,33 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
     displayHeading(window, "MODE MENU");
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
-    exitButton(window);
-    // if clicks at exit button then moves to mainmenu screen
-    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) 
-    {
-        if (mousePos.y >= 700.0f && mousePos.y <= 830.0f && mousePos.x >= 75.0f && mousePos.x <= 296.0f)
-        {
-            mainMenuChoice = 0;
-        }
-    }
-
     Font font;
     font.loadFromFile("res/Icecold.ttf");
     RectangleShape mode1, mode2;  // rectangle shapes for options of 2 modes as easy and hard
     mode1.setSize(Vector2f(350.0f, 50.0f));  // size for recatngle box 
     mode1.setFillColor(Color::Green);       // size of rectangle box 
-    mode1.setPosition(Vector2f(330.0f, 250.0f));
-    boxFillColor(mousePos, mode1, 250, 302, 330, 680);// fill mode1 which is a box, with red colour when cursor is places
+    mode1.setPosition(Vector2f(270.0f, 250.0f));
+    boxFillColor(mousePos, mode1, 250, 302, 270, 620);// fill mode1 which is a box, with red colour when cursor is places
     Text textForMode1("Newbie",font,40);     //  text defining for easy mode
     textForMode1.setLetterSpacing(4);
     textForMode1.setOutlineThickness(3);
     textForMode1.setFillColor(Color::Blue);
     textForMode1.setOutlineColor(Color::Black);
-    textForMode1.setPosition(Vector2f(365.0f, 251.0f));
+    textForMode1.setPosition(Vector2f(305.0f, 251.0f));
     //mode1.setPosition
     window.draw(mode1);
     window.draw(textForMode1);
     //-------------now for mode 2 which will be expert mode
     mode2.setSize(Vector2f(350.0f,50.0f));  // size for recatngle box 
     mode2.setFillColor(Color::Green);       // size of rectangle box 
-    mode2.setPosition(Vector2f(330.0f, 350.0f));
-    boxFillColor(mousePos, mode2, 350, 400, 330, 680);// fill mode2 which is a box, with red colour when cursor is places
+    mode2.setPosition(Vector2f(270.0f, 350.0f));
+    boxFillColor(mousePos, mode2, 350, 400, 270, 620);// fill mode2 which is a box, with red colour when cursor is places
     Text textForMode2("Expert", font, 40);     //  text defining for easy mode
     textForMode2.setLetterSpacing(4);
     textForMode2.setOutlineThickness(3);
     textForMode2.setFillColor(Color::Blue);
     textForMode2.setOutlineColor(Color::Black);
-    textForMode2.setPosition(Vector2f(355.0f, 351.0f));
+    textForMode2.setPosition(Vector2f(305.0f, 351.0f));
     //mode2.setPosition
     window.draw(mode2);
     window.draw(textForMode2);
@@ -191,10 +189,7 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
         }
        
     }
-
-
-
-
+    exitButton(window, event, mainMenuChoice);
 }
 void welcomeScreen(RenderWindow& window)
 {
@@ -244,7 +239,6 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     window.clear();   // clear the window to print this next screen
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
-    exitButton(window);
     // if clicks at exit button then moves to mainmenu screen
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
@@ -310,7 +304,7 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
         if (mousePos.y >= 250.0f && mousePos.y <= 450.0f && mousePos.x >= 360.0f && mousePos.x <= 560.0f) mainMenuChoice = 8;
         if (mousePos.y >= 250.0f && mousePos.y <= 450.0f && mousePos.x >= 590.0f && mousePos.x <= 790.0f) mainMenuChoice = 8;
     }
-
+    exitButton(window, event, mainMenuChoice);
 }
 void backgroundAnimation(RenderWindow& window)
 {
@@ -324,7 +318,6 @@ void backgroundAnimation(RenderWindow& window)
 }
 void instructions(RenderWindow& window, Event& event, int& mainMenuChoice)
 {
-    exitButton(window);
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
@@ -340,7 +333,7 @@ void instructions(RenderWindow& window, Event& event, int& mainMenuChoice)
     instruction.setTexture(intru);
     instruction.setPosition(0, 0);
     window.draw(instruction);
-
+    exitButton(window, event, mainMenuChoice);
 }
 void endingScreen(RenderWindow& window, Event& eventt, string text)
 {
@@ -459,11 +452,11 @@ void leaderBoard(RenderWindow& window, Event& event, int& mainMenuChoice)
     }
     // printing leaderboard
     Text textForMode1("LeaderBoard", font, 60);     //  text defining for easy mode
-    textForMode1.setLetterSpacing(3);
+    textForMode1.setLetterSpacing(2);
     textForMode1.setOutlineThickness(3);
     textForMode1.setFillColor(Color::Yellow);
     textForMode1.setOutlineColor(Color::Black);
-    textForMode1.setPosition(Vector2f(80.0f, 30.0f));
+    textForMode1.setPosition(Vector2f(110.0f, 30.0f));
     window.draw(textForMode1);
     RectangleShape mode1;  // rectangle shapes for options of 2 modes as easy and hard
     mode1.setSize(Vector2f(900.0f, 20.0f));  // size for recatngle box 
@@ -493,14 +486,69 @@ void leaderBoard(RenderWindow& window, Event& event, int& mainMenuChoice)
         scoreY += 60;
         window.draw(scores[j]);
     }
+    exitButton(window, event, mainMenuChoice);
+
 }
 void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
 {
-   
+    ifstream creditsR("credits.txt");
+    int posX = 300, posY = 850;
+    int fontSize = 20;
+    Text text[20];
+    string line[20];
+    Font font;
+    font.loadFromFile("res/robotic.ttf");
+    int q = 0;
+    while (getline(creditsR, line[q])) // Fix: use getline directly instead of checking eof()
+    {
+        q++;
+    }
+    // will load sentences from file
 
+    for (int i = 0; i < 20; i++)
+    {
+        text[i].setCharacterSize(30);
+        text[i].setLetterSpacing(3);
+        text[i].setFont(font);
+        text[i].setString(line[i]);
+        text[i].setOutlineThickness(3);
+        text[i].setOutlineColor(Color::White);
+        text[i].setFillColor(Color::Red);
+        text[i].setPosition(posX, posY);
+        posY += 60;
+    }
 
+    // Start the animation
+    Clock clock;
+    float time = 0;
+    posY = 900;
+    while (window.isOpen())
+    {
+        window.clear();
+        time += clock.getElapsedTime().asSeconds();
 
+        // Move the text down
+        for (int i = 0; i < 20; i++)
+        {
+            text[i].setPosition(0, (i * 2 * time));
+            text[i].setPosition(posX, posY - (i * 2 * time));
+        }
 
+        // Draw the text
+         sleep(milliseconds(100));
+        for (int i = 0; i < 20; i++)
+        {
+            window.draw(text[i]);
+            //sleep(milliseconds(100));
+        }
+        window.display();
+    }
+
+    creditsR.close(); // Fix: close the file after reading
 }
+
+
+
+
 
 
