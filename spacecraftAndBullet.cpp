@@ -2,6 +2,8 @@
 #include<SFML/Graphics.hpp>
 #include"spacecraftAndBullet.h"
 #include<string>
+#include<cmath>
+
 using namespace std;
 using namespace sf;
 /*
@@ -11,95 +13,247 @@ using namespace sf;
 * ------------------------
 */
 ///definitions for Spacecraft class
-Spacecraft::Spacecraft(int x, int y, int xFinal, int yFinal, string fileName, int health) {
-	xCord = x;
-	yCord = y;
-	this->xFinal = xFinal;
-	this->yFinal = yFinal;
-	this->health = health;
-	reached = 0;
-	this->scTexture.loadFromFile(fileName);
-	this->scSprite.setTexture(this->scTexture);
-	scSprite.setPosition(xCord, yCord);
+Spacecraft::Spacecraft(float x, float y, float xFinal, float yFinal, string fileName, int health, float speed) {
+    xCord = x;
+    yCord = y;
+    this->xFinal = xFinal;
+    this->yFinal = yFinal;
+    this->health = health;
+    this->speed = speed;
+    reached = 0;
+    this->scTexture.loadFromFile(fileName);
+    this->scSprite.setTexture(this->scTexture);
+    scSprite.setPosition(xCord, yCord);
 }
-void Spacecraft::setX(int x) { xCord = x; }
-void Spacecraft::setY(int y) { yCord = y; }
+void Spacecraft::setX(float x) { xCord = x; }
+void Spacecraft::setY(float y) { yCord = y; }
+void Spacecraft::setXFinal(float x) { xFinal = x; }
+void Spacecraft::setYFinal(float y) { yFinal = y; }
+void Spacecraft::setSpeed(float s) { speed = s; }
 void Spacecraft::setHealth(int h) { this->health = h; }
 void Spacecraft::setSprite(string fileName) {
-	this->scTexture.loadFromFile(fileName);
-	this->scSprite.setTexture(this->scTexture);
+    this->scTexture.loadFromFile(fileName);
+    this->scSprite.setTexture(this->scTexture);
 }
 void Spacecraft::setReached(bool status) { reached = status; }
-int Spacecraft::getX() { return xCord; }
-int Spacecraft::getY() { return yCord; }
+float Spacecraft::getX() { return xCord; }
+float Spacecraft::getY() { return yCord; }
+float Spacecraft::getXFinal() { return xFinal; }
+float Spacecraft::getYFinal() { return yFinal; }
+float Spacecraft::getSpeed() { return speed; }
 int Spacecraft::getHealth() { return health; }
 bool Spacecraft::getReached() { return reached; }
-Sprite Spacecraft::getSprite() { return this->scSprite; }
-void Spacecraft::draw(RenderWindow& window){}//C
-Spacecraft::~Spacecraft(){}
+Sprite& Spacecraft::getSprite() { return this->scSprite; }
+void Spacecraft::draw(RenderWindow& window) {
+    window.draw(this->scSprite);
+}
+Spacecraft::~Spacecraft() {}
 
 ///definitions for usercraft///
-Usercraft::Usercraft(int x, int y, int xFinal, int yFinal, string fileName):
-	Spacecraft(x,y,xFinal,yFinal,fileName, 8) {
+Usercraft::Usercraft(float x, float y, float xFinal, float yFinal, string fileName) :
+    Spacecraft(x, y, xFinal, yFinal, fileName, 8, 3) {
 }
-void Usercraft::moveTo(int x, int y){}
-void Usercraft::moveToInitial() {}//C
+void Usercraft::moveTo(float x, float y) {}
+void Usercraft::moveToInitial() {
+    float dx = getXFinal() - getX();
+    float dy = getYFinal() - getY();
+    float distance = std::sqrt(dx * dx + dy * dy);
+    if (distance <= getSpeed()) {
+        setX(getXFinal());
+        setY(getYFinal());
+        getSprite().setPosition(getX(), getY());
+    }
+    else {
+        float ratio = getSpeed() / distance;
+        setX(getX() + dx * ratio);
+        setY(getY() + dy * ratio);
+        getSprite().setPosition(getX(), getY());
+    }
+}//C
 Usercraft::~Usercraft() {}
 
 ///definitions for EnemyCraft///
-EnemyCraft::EnemyCraft(int x, int y, int xFinal, int yFinal, string fileName, int health) :
-	Spacecraft(x,y,xFinal,yFinal,fileName,health) {
+EnemyCraft::EnemyCraft(float x, float y, float xFinal, float yFinal, string fileName, int health, float speed) :
+    Spacecraft(x, y, xFinal, yFinal, fileName, health, speed) {
 }
-void EnemyCraft::moveToInitial() {}//C
+void EnemyCraft::moveToInitial() {
+    float dx = getXFinal() - getX();
+    float dy = getYFinal() - getY();
+    float distance = std::sqrt(dx * dx + dy * dy);
+    if (distance <= getSpeed()) {
+        setX(getXFinal());
+        setY(getYFinal());
+        getSprite().setPosition(getX(), getY());
+    }
+    else {
+        float ratio = getSpeed() / distance;
+        setX(getX() + dx * ratio);
+        setY(getY() + dy * ratio);
+        getSprite().setPosition(getX(), getY());
+    }
+}//C
 EnemyCraft::~EnemyCraft() {}
 
 ///definitions for EnemyRed///
-//EnemyRed::EnemyRed(int xFinal, int yFinal) {}//
-void EnemyRed::moveToInitial() {}//C
+EnemyRed::EnemyRed(float xFinal, float yFinal) :
+    EnemyCraft(-70.0, 710, xFinal, yFinal, "enemy_ship.png", 2, 6) {
+}//
+void EnemyRed::moveToInitial() {
+    float dx = getXFinal() - getX();
+    float dy = getYFinal() - getY();
+    float distance = std::sqrt(dx * dx + dy * dy);
+    if (distance <= getSpeed()) {
+        setX(getXFinal());
+        setY(getYFinal());
+        getSprite().setPosition(getX(), getY());
+    }
+    else {
+        float ratio = getSpeed() / distance;
+        setX(getX() + dx * ratio);
+        setY(getY() + dy * ratio);
+        getSprite().setPosition(getX(), getY());
+    }
+}//C health = 2
 EnemyRed::~EnemyRed() {}
 
 ///definitions for enemyBlue///
-//EnemyBlue::EnemyBlue(int xFinal, int yFinal){}//C
-void EnemyBlue::moveToInitial() {}
+EnemyBlue::EnemyBlue(float xFinal, float yFinal) : 
+    EnemyCraft(-80.0, 650, xFinal, yFinal, "enemy_ship.png", 1, 4) {
+}//C health = 1
+void EnemyBlue::moveToInitial() {
+    float dx = getXFinal() - getX();
+    float dy = getYFinal() - getY();
+    float distance = std::sqrt(dx * dx + dy * dy);
+    if (distance <= getSpeed()) {
+        setX(getXFinal());
+        setY(getYFinal());
+        getSprite().setPosition(getX(), getY());
+    }
+    else {
+        float ratio = getSpeed() / distance;
+        setX(getX() + dx * ratio);
+        setY(getY() + dy * ratio);
+        getSprite().setPosition(getX(), getY());
+    }
+}
 EnemyBlue::~EnemyBlue() {}
 
 ///definitions for enemyGreen///
-//EnemyGreen::EnemyGreen(int xFinal, int yFinal) {}//C
-void EnemyGreen::moveToInitial() {}//C
+EnemyGreen::EnemyGreen(float xFinal, float yFinal):
+    EnemyCraft(920.0, 700, xFinal, yFinal, "enemy_ship.png", 1, 4) {
+}
+void EnemyGreen::moveToInitial() {
+    float dx = getXFinal() - getX();
+    float dy = getYFinal() - getY();
+    float distance = std::sqrt(dx * dx + dy * dy);
+    if (distance <= getSpeed()) {
+        setX(getXFinal());
+        setY(getYFinal());
+        getSprite().setPosition(getX(), getY());
+    }
+    else {
+        float ratio = getSpeed() / distance;
+        setX(getX() + dx * ratio);
+        setY(getY() + dy * ratio);
+        getSprite().setPosition(getX(), getY());
+    }
+}//C health = 1
 EnemyGreen::~EnemyGreen() {}
 
 ///definitions for BigBoss///
-//BigBoss::BigBoss(int x, int y, int xFinal, int yFinal, string fileName);//C
-void BigBoss::moveToInitial() {}//C
+//BigBoss::BigBoss(float x, float y, float xFinal, float yFinal, string fileName);//C
+void BigBoss::moveToInitial() {
+    float dx = getXFinal() - getX();
+    float dy = getYFinal() - getY();
+    float distance = std::sqrt(dx * dx + dy * dy);
+    if (distance <= getSpeed()) {
+        setX(getXFinal());
+        setY(getYFinal());
+        getSprite().setPosition(getX(), getY());
+    }
+    else {
+        float ratio = getSpeed() / distance;
+        setX(getX() + dx * ratio);
+        setY(getY() + dy * ratio);
+        getSprite().setPosition(getX(), getY());
+    }
+}//C
 BigBoss::~BigBoss() {}
 
 ///definitions for bullet///
-//Bullet::Bullet(int type, bool isFriendly, int x, int y, string fileName);
-//void Bullet::setSprite(string fileName);
-//bool Bullet::getIsFriendly();
-//int Bullet::getType();
-//int Bullet::getX();
-//int Bullet::getY();
-//Sprite Bullet::getSprite();
-//void Bullet::move();
-//bool Bullet::isOutOfScope();//return true is bullet has ggone out of window
-//void Bullet::draw(sf::RenderWindow& window) {}
+/*
+    * type 1 = verticle move bullet
+    * type 2 = down right
+    * type 3 = down left
+*/
+Bullet::Bullet(int type, bool isFriendly, int x, int y) {
+ 
+    this->type = type;
+    this->isFriendly = isFriendly;
+    xCord = x;
+    yCord = y;
+    this->isAlive = true;
+    if(isFriendly)  this->bulletTexture.loadFromFile("bullet.png");
+    else  this->bulletTexture.loadFromFile("enemy-bullet1");
+    this->bulletSprite.setTexture(this->bulletTexture);
+    bulletSprite.setPosition(xCord, yCord);
+}
+void Bullet::setSprite(string fileName) {
+
+    this->bulletTexture.loadFromFile(fileName);
+    this->bulletSprite.setTexture(this->bulletTexture);
+}
+bool Bullet::getIsFriendly() { return isFriendly; }
+int Bullet::getType() { return type; }
+float Bullet::getX() { return xCord; }
+float Bullet::getY() { return yCord; }
+Sprite& Bullet::getSprite() { return bulletSprite; }
+void Bullet::move() {
+
+    if (type == 1) {//verticle movement
+        if (isFriendly) {
+            bulletSprite.move(0, -4);//for user bullets
+        }
+        else {
+            bulletSprite.move(0, 4);//for enemy bullets
+        }
+    }
+
+    else if (type == 2) {//for down right
+        bulletSprite.move(2, 4);
+    }
+
+    else {//for down left movement
+        bulletSprite.move(-2, 4);
+    }
+
+    xCord = bulletSprite.getPosition().x;
+    yCord = bulletSprite.getPosition().y;
+}
+bool Bullet::isOutOfScope() {
+    //return true is bullet has gone out of window
+    return (xCord > 900 || xCord < 0 || yCord>900 || yCord < 0);
+}
+void Bullet::draw(sf::RenderWindow& window) { 
+    window.draw(this->bulletSprite);
+}
 
 ///definitions for Powerup///
-Powerup::Powerup(int x, int y, string fileName) {
-	this->xCord = x;
-	this->yCord = y;
-	this->isAlive = 1;
-	this->upTexture.loadFromFile(fileName);
-	this->upSprite.setTexture(this->upTexture);
-	this->upSprite.setPosition(xCord, yCord);
+Powerup::Powerup(float x, float y, string fileName) {
+
+    this->xCord = x;
+    this->yCord = y;
+    this->isAlive = true;
+    this->upTexture.loadFromFile(fileName);
+    this->upSprite.setTexture(this->upTexture);
+    this->upSprite.setPosition(xCord, yCord);
 }
 void Powerup::setAlive(bool status) { isAlive = status; }
 bool Powerup::getAlive() { return isAlive; }//needed to be popped out of vector
-void Powerup::move() { 
-	yCord -= 5;
-	upSprite.setPosition(xCord, yCord);
+void Powerup::move() {//move the powerup downwards
+    upSprite.move(0, 5);
+    yCord = upSprite.getPosition().y;
 }
 void Powerup::draw(sf::RenderWindow& window) {
-	window.draw(upSprite);
+    window.draw(upSprite);
 }

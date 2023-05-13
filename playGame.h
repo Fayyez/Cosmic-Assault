@@ -15,6 +15,7 @@ class PLayGame {
 	bool won;//true when user has won the game, i.e, defeated the BigBoss
 	bool lose;//true when enemy crosses border or when userhealth==0
 	bool mode;//true foe expert mode
+	bool allEnemyReached;
 	bool direcrion;//true if enemy formation is moving rightwards and vice versa
 	Clock clockTotal;
 	Clock clockForFiring;
@@ -47,6 +48,7 @@ public:
 	void moveBullets();//calss move of all bullets and destroyes all bullets that are out of scope of window
 	void draw(RenderWindow& window);
 	void moveEnemies();//move the enemy formation and also saves the rightmost and leftmost enemy at any given time
+	bool checkCollisionWithAllBullets(EnemyCraft* craft);
 	void play(RenderWindow&window,Event&event);//main method where game is played;
 	~PLayGame();//should empty all the vectors and delete player and bigBoss
 };
