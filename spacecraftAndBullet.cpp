@@ -44,6 +44,11 @@ float Spacecraft::getSpeed() { return speed; }
 int Spacecraft::getHealth() { return health; }
 bool Spacecraft::getReached() { return reached; }
 Sprite& Spacecraft::getSprite() { return this->scSprite; }
+void Spacecraft::moveSprite(int x, int y) {
+    scSprite.move(x, y);
+    xCord = scSprite.getPosition().x;
+    yCord = scSprite.getPosition().y;
+}
 void Spacecraft::draw(RenderWindow& window) {
     window.draw(this->scSprite);
 }

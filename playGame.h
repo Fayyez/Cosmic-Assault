@@ -17,7 +17,7 @@ class PLayGame {
 	bool lose;//true when enemy crosses border or when userhealth==0
 	bool mode;//true foe expert mode
 	bool allEnemyReached;
-	bool direcrion;//true if enemy formation is moving rightwards and vice versa
+	bool direction;//true if enemy formation is moving rightwards and vice versa
 	Clock clockTotal;
 	Clock clockForFiring;
 	Time totalTime;
@@ -35,6 +35,7 @@ class PLayGame {
 	BigBoss* wadiBala;//obj of bigbossis created only when user has passed 5 levels
 	EnemyCraft* rightmost;
 	EnemyCraft* leftmost;
+	EnemyCraft* lowest;
 
 public:
 
@@ -48,8 +49,8 @@ public:
 	void createFormation();//fills formation[][] according to level every 30sec
 	void moveBullets();//calss move of all bullets and destroyes all bullets that are out of scope of window
 	void draw(RenderWindow& window);
-	void moveEnemies();//move the enemy formation and also saves the rightmost and leftmost enemy at any given time
 	bool checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window);
+	void moveFormationNormally(int currentSize);//move the enemy formation and also saves the rightmost and leftmost enemy at any given time
 	void play(RenderWindow&window,Event&event);//main method where game is played;
 	~PLayGame();//should empty all the vectors and delete player and bigBoss
 };

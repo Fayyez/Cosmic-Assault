@@ -63,7 +63,7 @@ PLayGame::PLayGame(bool mode, int craftChoice) {//starts with level 0 for beginn
 	this->score = 0;
 	this->won = false;
 	this->mode = mode;
-	this->direcrion = true;//initially move formation to right
+	this->direction = true;//initially move formation to right
 	this->clockTotal.restart();
 	this->clockForFiring.restart();
 	this->cooldownTime = seconds(0.5f);
@@ -139,11 +139,11 @@ void PLayGame::draw(RenderWindow& window);
 * draw user health
 * draw score
 */
-void PLayGame::moveEnemies();//move the enemy formation and update direction if formation moved down
 bool PLayGame::checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window) {
 	//return true if spacecraft sprties collided with a bullet
 
-	for (int i = 0; i < bulletArr.size();i++) {
+	for (int i = 0; i < bulletArr.size(); i++) {
+
 		if (collides(craft->getSprite(), bulletArr[i]->getSprite(), window) && bulletArr[i]->getIsFriendly()) {
 			//returns true if any friendly bullet collides with that enemy craft
 			//remove the bullet from bulletArr & delete the pointer
@@ -158,23 +158,49 @@ bool PLayGame::checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& win
 	}
 	return false;
 }
+void PLayGame::moveFormationNormally(int currentSize) {
+
+	if (leftmost->getX() <= 10 || rightmost->getX() >= 890) {
+	//if formation has touched right/left boundary -> move down
+		for (int i = 0; i < currentSize; i++) {
+			enemyArr[i]->moveSprite(0, 5);
+		}
+		direction = !direction;//changing direction of motion of formation
+	}
+
+	if (direction) {//if moving towards right
+		for (int i = 0; i < currentSize; i++) {
+			enemyArr[i]->moveSprite(5,0);//move all enemies 5pixels to right
+		}
+	}
+
+	else {
+		for (int i = 0; i < currentSize; i++) {
+			enemyArr[i]->moveSprite(-5,0);//move all enemies 5pixels to left
+		}
+	}
+}
 void PLayGame::play(RenderWindow& window, Event& event) {
 
 	//untill not time for bigBoss
 	bool formationKilled = formationIsKilled();
-	if (!sessionCompleted() || !formationKilled) {
-	//if under normal conditions:
+	if (!formationKilled || (mode && currentLevel < 7) || (!mode && currentLevel < 5 )) {
+	//if under normal conditions :
 
 		if (formationKilled) {//if enemies are not present on screen
 			createFormation();
 			//currentLevel++;
 		}
+		//pointing leftmost, rightmost, lowest
+		lowest = rightmost = leftmost = enemyArr[0];
 
-		bool reached = true;//assume formaion has been formed
+		bool formationReached = true;//assume formaion has been formed
 		int currentSize = 0;//declared outside to be used as a size() for enemyArr;
 		for (; currentSize < enemyArr.size(); currentSize++) {
 			
-			//check for bullet collisions
+			////check for bullet collisions & formation status////
+
+			//checking for collisions:
 			if (checkCollisionWithAllBullets(enemyArr[currentSize], window)) {
 				//if collided with a friendly bullet
 				enemyArr[currentSize]->setHealth(enemyArr[currentSize]->getHealth() - 1);//decrease health
@@ -182,10 +208,10 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 			//check for collision with UserCraft
 			if (collides(player->getSprite(), enemyArr[currentSize]->getSprite(), window)) {
 				enemyArr[currentSize]->setHealth(0);//kill on collision with user
-				player->setHealth(player->getHealth() - 2);//user health is decreased bby 2 on impact with enemycraft
+				player->setHealth(player->getHealth() - 2);//user health is decreased by 2 on impact with enemycraft
 			}
-
-			if (enemyArr[currentSize]->getHealth() <= 0) {//if enemy health == 0
+			//removing dead enemies
+			if (enemyArr[currentSize]->getHealth() <= 0) {//if enemy health == 0 -> pop out of enemyArr
 
 				if (enemyArr[currentSize] != nullptr) {
 					delete enemyArr[currentSize];
@@ -194,15 +220,32 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 				enemyArr.erase(enemyArr.begin() + currentSize);
 				currentSize--;
 			}
-			//if enemy formation is not complete
-		    if (!enemyArr[currentSize]->getReached()) { reached = false; }
 
-		}
-		///enemy movement & update leftmost lowest, etc///
-		if (!reached) {//enemy formation is not set yet
-			for (int j = 0; j < currentSize; j++) {
-
+			//moving to initial positions
+			if (!enemyArr[currentSize]->getReached()) {//move towards xFinal & yFinal
+				enemyArr[currentSize]->moveToInitial();
 			}
+
+			//if enemy formation is not complete
+		    if (!enemyArr[currentSize]->getReached()) { formationReached = false; }
+            //if that enemy has reached final then decide leftmost, rightmost and lowest
+			else {
+
+				if (enemyArr[currentSize]->getSprite().getPosition().x > rightmost->getSprite().getPosition().x) {
+					rightmost = enemyArr[currentSize];//getting rightmost
+				}
+				if (enemyArr[currentSize]->getSprite().getPosition().x < leftmost->getSprite().getPosition().x) {
+					leftmost = enemyArr[currentSize];//getting leftmost
+				}
+				if (enemyArr[currentSize]->getSprite().getPosition().y > lowest->getSprite().getPosition().y) {
+					lowest = enemyArr[currentSize];//getting lowest
+				}
+			}
+		}
+
+		///enemy movement & update leftmost lowest, etc///
+		if (formationReached) {//enemy formation is complete
+			moveFormationNormally(currentSize);
 		}
 
 	}
@@ -227,14 +270,14 @@ PLayGame::~PLayGame() {
 		delete powerupArr[i];
 		powerupArr[i] = nullptr;
 	}
+	//deallocating user craft
 	if (player != nullptr) {
 		delete player;
 		player = nullptr;
 	}
+	//deallocating bigboss
 	if (wadiBala != nullptr) {
 		delete wadiBala;
 		wadiBala = nullptr;
 	}
-
-
 }

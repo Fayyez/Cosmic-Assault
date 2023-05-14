@@ -33,6 +33,7 @@ public:
 	bool getReached();
 	sf::Sprite& getSprite();
 	virtual void moveToInitial() = 0;//all types of crafts have specific movement from origin to x_final&y_final
+	void moveSprite(int x, int y);
 	void draw(sf::RenderWindow& window);
 	virtual ~Spacecraft();
 
