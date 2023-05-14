@@ -71,13 +71,13 @@ PLayGame::PLayGame(bool mode, int craftChoice) {//starts with level 0 for beginn
 	if (mode) {//expert mode
 		currentLevel = 2;
 		speedOfFormation = 6;
-		player = new Usercraft(0, 0, 370, 780, imageName, 50);//*****HEALTH PART TO BE IMPLEMENTED*********//
+		player = new Usercraft(370, 1000, 370, 740, imageName, 50);//*****HEALTH PART TO BE IMPLEMENTED*********//
 	}
 	else {//beginners mode
 		currentLevel = 0;
 		speedOfFormation = 2;
 		///*********HEALTH PART TO BE IMPLEMENTED&*******************///
-		player = new Usercraft(0, 0, 370, 780, imageName, 100);
+		player = new Usercraft(370, 1000, 370, 740, imageName, 100);
 	}
 	wadiBala = new BigBoss(350, -120, 350,200, "s_ship.png");
 	//formation[10][18] = {0};//start with an empty formation
@@ -117,7 +117,7 @@ void PLayGame::createEnemy(int type, int xFinal, int yFinal) {
 		enemyArr.push_back(new EnemyBlue(xFinal, yFinal));
 	}
 }
-void PLayGame::createFormation() {//fills formation[][] according to level every 30sec
+void PLayGame::createFormation(bool& status) {//fills formation[][] according to level every 30sec
 
 	if (currentLevel == 0 || currentLevel == 2) {//==2 is to be removed later when more formations are added
 		//create a rectangle of 4X10 all greens
@@ -127,19 +127,11 @@ void PLayGame::createFormation() {//fills formation[][] according to level every
 				createEnemy(1, j, i);
 			}
 		}
+		status = !status;
 	}
 
 	//********8more formations to be added*******//
 }
-//void PLayGame::moveBullets();//calss move of all bullets and destroyes all bullets that are out of scope of window
-//void PLayGame::draw(RenderWindow& window);
-/*
-* draw enemies/bigboss
-* draw bullets
-* draw user
-* draw user health
-* draw score
-*/
 bool PLayGame::checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window) {
 	//return true if spacecraft sprties collided with a bullet
 
@@ -159,25 +151,25 @@ bool PLayGame::checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& win
 	}
 	return false;
 }
-void PLayGame::moveFormationNormally(int currentSize) {
+void PLayGame::moveFormationNormally(int currentSiz) {
 
 	if (leftmost->getX() <= 10 || rightmost->getX() >= 850) {
 	//if formation has touched right/left boundary -> move down
-		for (int i = 0; i < currentSize; i++) {
-			enemyArr[i]->moveSprite(0, 5);
+		for (int i = 0; i < enemyArr.size(); i++) {
+			enemyArr[i]->moveSprite(0, 10);
 		}
 		direction = !direction;//changing direction of motion of formation
 	}
 
 	if (direction) {//if moving towards right
-		for (int i = 0; i < currentSize; i++) {
-			enemyArr[i]->moveSprite(5,0);//move all enemies 5pixels to right
+		for (int i = 0; i < enemyArr.size(); i++) {
+			enemyArr[i]->moveSprite(2,0);//move all enemies 5pixels to right
 		}
 	}
 
 	else {//moving to left
-		for (int i = 0; i < currentSize; i++) {
-			enemyArr[i]->moveSprite(-5,0);//move all enemies 5pixels to left
+		for (int i = 0; i < enemyArr.size(); i++) {
+			enemyArr[i]->moveSprite(-2,0);//move all enemies 5pixels to left
 		}
 	}
 }
@@ -196,7 +188,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 
 		if (Keyboard::isKeyPressed(Keyboard::Space) && timeFromLastFire >= cooldownTime) {
 			clockForFiring.restart();
-			bulletArr.push_back(new Bullet(1, 1, player->getX(), player->getY()));
+			bulletArr.push_back(new Bullet(1, 1, player->getX() + 32, player->getY()));
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Right)) {
 			player->moveSprite(5, 0);
@@ -218,13 +210,12 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 
 	//untill not time for bigBoss
 	bool formationKilled = formationIsKilled();
-	if (!sessionCompleted() || !formationKilled || (mode && currentLevel < 7) || (!mode && currentLevel < 5)) {
+	if (!formationKilled || currentLevel < 1 && player->getReached()==1) {// || (mode && currentLevel < 7) || (!mode && currentLevel < 5) 
 	//if under normal conditions :
 
 		if (formationKilled) {//if enemies are not present on screen
-			createFormation();
+			createFormation(formationKilled);
 			currentLevel++;
-			formationKilled = 0;
 		}
 		//pointing leftmost, rightmost, lowest
 		lowest = rightmost = leftmost = enemyArr[0];
@@ -328,7 +319,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 	}
 
 	//////********winning conditions******///////////
-	if (1) {
+	if (formationKilled&&currentLevel>=1) {
 		won = true;
 	}
 }

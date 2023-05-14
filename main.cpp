@@ -21,9 +21,8 @@ int main()
     while (window.isOpen())
     {
         static int i = 0;
-        if(i++==0)  welcomeScreen(window);    
-        while (window.pollEvent(event))
-        {
+        if(i++ == 0)  welcomeScreen(window);    
+        while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
             {
                 window.close();
@@ -70,6 +69,7 @@ int main()
                 window.display();
 
             } while (!game->getWon());
+
             if (game->getWon()) {
 
                 mainMenuChoice = 0;
