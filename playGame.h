@@ -45,9 +45,7 @@ public:
 	bool sessionCompleted();
 	bool formationIsKilled();//if formation is killed, level is incremented
 	void createEnemy(int type, int xFinal, int yFinal);
-	void createFormation();//fills formation[][] according to level every 30sec
-	void moveBullets();//calss move of all bullets and destroyes all bullets that are out of scope of window
-	void draw(RenderWindow& window);
+	void createFormation(bool& status);//fills formation[][] according to level every 30sec
 	bool checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window);
 	void moveFormationNormally(int currentSize);//move the enemy formation and also saves the rightmost and leftmost enemy at any given time
 	void play(RenderWindow&window,Event&event);//main method where game is played;

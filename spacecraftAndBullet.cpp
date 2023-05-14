@@ -57,7 +57,7 @@ Spacecraft::~Spacecraft() {}
 
 ///definitions for usercraft///
 Usercraft::Usercraft(float x, float y, float xFinal, float yFinal, string fileName, int health) :
-    Spacecraft(x, y, xFinal, yFinal, fileName, health, 3) {
+    Spacecraft(x, y, xFinal, yFinal, fileName, health, 1) {
 }
 void Usercraft::moveTo(float x, float y) {}
 void Usercraft::moveToInitial() {
@@ -71,8 +71,11 @@ void Usercraft::moveToInitial() {
     }
     else {
         float ratio = getSpeed() / distance;
-        setX(getX() + dx * ratio);
-        setY(getY() + dy * ratio);
+        getSprite().setPosition(getX() + dx * ratio, getY() + dy * ratio);
+       // setX(getX() + dx * ratio);
+        setX(getSprite().getPosition().x);
+        //setY(getY() + dy * ratio);
+        setY(getSprite().getPosition().y);
         getSprite().setPosition(getX(), getY());
     }
     if (getX() == getXFinal() && getY() == getYFinal()) this->setReached(true);
@@ -104,7 +107,7 @@ EnemyCraft::~EnemyCraft() {}
 
 ///definitions for EnemyRed///
 EnemyRed::EnemyRed(float xFinal, float yFinal) :
-    EnemyCraft(-70.0, 710, xFinal, yFinal, "enemy_ship.png", 2, 6) {
+    EnemyCraft(-70.0, 710, xFinal, yFinal, "enemy_ship.png", 2, 3) {
 }//
 void EnemyRed::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -127,7 +130,7 @@ EnemyRed::~EnemyRed() {}
 
 ///definitions for enemyBlue///
 EnemyBlue::EnemyBlue(float xFinal, float yFinal) : 
-    EnemyCraft(-80.0, 650, xFinal, yFinal, "enemy_ship.png", 1, 4) {
+    EnemyCraft(-80.0, 650, xFinal, yFinal, "enemy_ship.png", 1, 1.5) {
 }//C health = 1
 void EnemyBlue::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -150,7 +153,7 @@ EnemyBlue::~EnemyBlue() {}
 
 ///definitions for enemyGreen///
 EnemyGreen::EnemyGreen(float xFinal, float yFinal):
-    EnemyCraft(920.0, 700, xFinal, yFinal, "enemy_ship.png", 1, 4) {
+    EnemyCraft(920.0, 700, xFinal, yFinal, "enemy_ship.png", 1, 3) {
 }
 void EnemyGreen::moveToInitial() {
     float dx = getXFinal() - getX();

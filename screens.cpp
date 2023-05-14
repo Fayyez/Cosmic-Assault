@@ -26,7 +26,7 @@ void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
 void displayHeading(RenderWindow & window, string heading)
 {
     Font font;
-    font.loadFromFile("res/Icecold.ttf");
+    font.loadFromFile("res/robotic.ttf");
     Text textForMode1(heading, font, 60);     //  text defining for easy mode
     textForMode1.setLetterSpacing(3);
     textForMode1.setOutlineThickness(3);
@@ -83,7 +83,7 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     displayHeading(window, "MAIN MENU");
     Vector2i mousePos;// defining to determine and handle mouse coordinates on window, it refers Mouse Position
     Font font;
-    font.loadFromFile("res/Icecold.ttf");  // loading font from a file 
+    font.loadFromFile("res/robotic.ttf");  // loading font from a file 
     Text text_1("New Game", font, 50);   //  assigning string to text, setting font which is loaded and 25 is font size
     text_1.setOutlineThickness(2);
     text_1.setOutlineColor(Color::Red);
