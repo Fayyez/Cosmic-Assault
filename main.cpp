@@ -69,9 +69,9 @@ int main()
         }
         else if (mainMenuChoice == 3) // will go in credits screen
         {
-           //string name = getPlayerName(window,event);
-           // endingScreen(window, event,"YOU LOST!");
-            creditScreen(window, event, mainMenuChoice);
+          // string name = getPlayerName(window,event);
+            endingScreen(window, event,"YOU LOST!");
+            //creditScreen(window, event, mainMenuChoice);
             cout << mainMenuChoice << endl;
             //mainMenuChoice = 0;
         }
