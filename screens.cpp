@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 using namespace std;
 using namespace sf;
 void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
@@ -115,7 +116,7 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     window.draw(text_4);
     static Sprite spaceShip;   // creates ship which will move left write in main screen
     static Texture texShip;     // static used to avoid redeclaration and redifination of ship every time loop reiterrates
-    texShip.loadFromFile("s_ship.png");     
+    texShip.loadFromFile("sec_ship.png");     
     spaceShip.setTexture(texShip);
     static int shipX = 350, shipY = 700;  // defining coordinates at end of window
  
@@ -516,7 +517,7 @@ void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
 
     for (int i = 0; i < 20; i++)
     {
-        text[i].setCharacterSize(30);
+        text[i].setCharacterSize(50);
         text[i].setLetterSpacing(3);
         text[i].setFont(font);
         text[i].setString(line[i]);
@@ -524,33 +525,30 @@ void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
         text[i].setOutlineColor(Color::White);
         text[i].setFillColor(Color::Red);
         text[i].setPosition(posX, posY);
-        posY += 60;
+        posY += 30;
     }
 
     // Start the animation
-    Clock clock;
-    float time = 0;
     posY = 900;
+    int i = 0;
+    int sizeOfLoop=20;// it will increase every time loop iterates because every time more text will be displayed on screen than previous
     while (window.isOpen())
     {
         window.clear();
-        time += clock.getElapsedTime().asSeconds();
-
-        // Move the text down
-        for (int i = 0; i < 20; i++)
-        {
-            text[i].setPosition(0, (i * 2 * time));
-            text[i].setPosition(posX, posY - (i * 2 * time));
-        }
-
-        // Draw the text
-         sleep(milliseconds(100));
-        for (int i = 0; i < 20; i++)
-        {
+        for (int i = 0; i < 20; i++) {
+            if (text[i].getPosition().y < 900) {
+                text[i].setPosition(text[i].getPosition().x + 10, text[i].getPosition().y - 30);
+                text[i].setCharacterSize(text[i].getCharacterSize() - 5);
+            }
+            text[i].setPosition(text[i].getPosition().x, text[i].getPosition().y - 30);
             window.draw(text[i]);
-            //sleep(milliseconds(100));
+            sleep(milliseconds(30));
         }
+          
+        exitButton(window, event, mainMenuChoice);
         window.display();
+        if (mainMenuChoice == 0) break;
+       
     }
 
     creditsR.close(); // Fix: close the file after reading
