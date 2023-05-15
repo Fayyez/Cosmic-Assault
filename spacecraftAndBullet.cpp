@@ -175,8 +175,8 @@ void EnemyGreen::moveToInitial() {
 EnemyGreen::~EnemyGreen() {}
 
 ///definitions for BigBoss///
-BigBoss::BigBoss(float x, float y, float xFinal, float yFinal, string fileName):
-    Spacecraft(x,y,xFinal,yFinal,fileName,15,5) {
+BigBoss::BigBoss(float x, float y, float xFinal, float yFinal):
+    Spacecraft(x,y,xFinal,yFinal,"bigBoss.png", 5, 5) {
 }
 void BigBoss::moveToInitial() {
     float dx = getXFinal() - getX();

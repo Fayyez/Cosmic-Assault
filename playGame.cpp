@@ -20,6 +20,16 @@ bool shouldFire(bool mode) {//returns true 10% of the time if status is true and
 	}
 
 }
+bool BalashouldFire() {
+
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_real_distribution<float> dis(0.0f, 1.0f);
+
+	float chances;
+	chances = dis(gen);
+    return (chances <= 0.01f);
+}
 bool collides(Sprite& ship, Sprite& sprite2, RenderWindow& window)
 {
 	// get the global bounds of the sprites
@@ -79,7 +89,7 @@ PLayGame::PLayGame(bool mode, int craftChoice) {//starts with level 0 for beginn
 		///*********HEALTH PART TO BE IMPLEMENTED&*******************///
 		player = new Usercraft(370, 1000, 370, 740, imageName, 100);
 	}
-	wadiBala = new BigBoss(350, -120, 350,200, "s_ship.png");
+	wadiBala = new BigBoss(350, -120, 350,200);
 	//formation[10][18] = {0};//start with an empty formation
 }
 void PLayGame::setSpeed(int s) { speedOfFormation = s; }
@@ -151,24 +161,42 @@ bool PLayGame::checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& win
 	}
 	return false;
 }
-void PLayGame::moveFormationNormally(int currentSiz) {
+bool PLayGame::checkCollisionWithAllBullets(RenderWindow& window) {
+
+	for (int i = 0; i < bulletArr.size(); i++) {
+
+		if (collides(wadiBala->getSprite(), bulletArr[i]->getSprite(), window) && bulletArr[i]->getIsFriendly()) {
+			//returns true if any friendly bullet collides with that enemy craft
+			//remove the bullet from bulletArr & delete the pointer
+			if (bulletArr[i] != nullptr) {
+				delete bulletArr[i];
+				bulletArr[i] = nullptr;
+			}
+			bulletArr.erase(bulletArr.begin() + i);//pop out that bullet
+			i--;
+			return true;
+		}
+	}
+	return false;
+}
+void PLayGame::moveFormationNormally(int currentSize) {
 
 	if (leftmost->getX() <= 10 || rightmost->getX() >= 850) {
 	//if formation has touched right/left boundary -> move down
-		for (int i = 0; i < enemyArr.size(); i++) {
+		for (int i = 0; i < currentSize; i++) {
 			enemyArr[i]->moveSprite(0, 10);
 		}
 		direction = !direction;//changing direction of motion of formation
 	}
 
 	if (direction) {//if moving towards right
-		for (int i = 0; i < enemyArr.size(); i++) {
+		for (int i = 0; i < currentSize; i++) {
 			enemyArr[i]->moveSprite(2,0);//move all enemies 5pixels to right
 		}
 	}
 
 	else {//moving to left
-		for (int i = 0; i < enemyArr.size(); i++) {
+		for (int i = 0; i < currentSize; i++) {
 			enemyArr[i]->moveSprite(-2,0);//move all enemies 5pixels to left
 		}
 	}
@@ -190,19 +218,19 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 			clockForFiring.restart();
 			bulletArr.push_back(new Bullet(1, 1, player->getX() + 32, player->getY()));
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Right)) {
+		if (Keyboard::isKeyPressed(Keyboard::Right) && player->getX() < 810) {
 			player->moveSprite(5, 0);
 			// cout << "Right" << endl;
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Left)) {
+		if (Keyboard::isKeyPressed(Keyboard::Left) && player->getX() > 10) {
 			player->moveSprite(-5, 0);
 			//cout << "Left" << endl;
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Down)) {
+		if (Keyboard::isKeyPressed(Keyboard::Down) && player->getY() < 790) {
 			player->moveSprite(0, 5);
 			// cout << "Down" << endl;
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Up)) {
+		if (Keyboard::isKeyPressed(Keyboard::Up) && player->getY() > 650) {
 			player->moveSprite(0, -5);
 			//cout << "up" << endl;
 		}
@@ -210,83 +238,110 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 
 	//untill not time for bigBoss
 	bool formationKilled = formationIsKilled();
-	if (!formationKilled || currentLevel < 1 && player->getReached()==1) {// || (mode && currentLevel < 7) || (!mode && currentLevel < 5) 
-	//if under normal conditions :
+	if (player->getReached()) {//enemies and bigboss appear once player has reached initial
 
-		if (formationKilled) {//if enemies are not present on screen
-			createFormation(formationKilled);
-			currentLevel++;
-		}
-		//pointing leftmost, rightmost, lowest
-		lowest = rightmost = leftmost = enemyArr[0];
+			if (!formationKilled || currentLevel < 1) {// || (mode && currentLevel < 7) || (!mode && currentLevel < 5) 
+			//if under normal conditions :
 
-		bool formationReached = true;//assume formaion has been formed
-		int currentSize = 0;//declared outside to be used as a size() for enemyArr;
-
-		////check for bullet collisions & formation status////
-		for (; currentSize < enemyArr.size(); currentSize++) {
-
-			enemyArr[currentSize]->draw(window);
-			//enemy firing
-			if (shouldFire(mode)) {
-				//will create a non-friendly bullet of type 1
-				bulletArr.push_back(new Bullet(1, 0, enemyArr[currentSize]->getX() + 20, enemyArr[currentSize]->getY() + 40));
-			}
-
-			//moving to initial positions
-			if (!enemyArr[currentSize]->getReached()) {//move towards xFinal & yFinal
-				enemyArr[currentSize]->moveToInitial();
-			}
-
-			//if enemy formation is not complete
-			if (!enemyArr[currentSize]->getReached()) { formationReached = false; }
-			//if that enemy has reached final then decide leftmost, rightmost and lowest
-			else {
-				if (enemyArr[currentSize]->getSprite().getPosition().x > rightmost->getSprite().getPosition().x) {
-					rightmost = enemyArr[currentSize];//getting rightmost
+				if (formationKilled) {//if enemies are not present on screen
+					createFormation(formationKilled);
+					currentLevel++;
 				}
-				if (enemyArr[currentSize]->getSprite().getPosition().x < leftmost->getSprite().getPosition().x) {
-					leftmost = enemyArr[currentSize];//getting leftmost
-				}
-				if (enemyArr[currentSize]->getSprite().getPosition().y > lowest->getSprite().getPosition().y) {
-					lowest = enemyArr[currentSize];//getting lowest
-				}
-			}
+				//pointing leftmost, rightmost, lowest
+				lowest = rightmost = leftmost = enemyArr[0];
+
+				bool formationReached = true;//assume formaion has been formed
+				int currentSize = 0;//declared outside to be used as a size() for enemyArr;
+
+				////check for bullet collisions & formation status////
+				for (; currentSize < enemyArr.size(); currentSize++) {
+
+					enemyArr[currentSize]->draw(window);
+					//enemy firing
+					if (shouldFire(mode)) {
+						//will create a non-friendly bullet of type 1
+						bulletArr.push_back(new Bullet(1, 0, enemyArr[currentSize]->getX() + 20, enemyArr[currentSize]->getY() + 40));
+					}
+
+					//moving to initial positions
+					if (!enemyArr[currentSize]->getReached()) {//move towards xFinal & yFinal
+						enemyArr[currentSize]->moveToInitial();
+					}
+
+					//if enemy formation is not complete
+					if (!enemyArr[currentSize]->getReached()) { formationReached = false; }
+					//if that enemy has reached final then decide leftmost, rightmost and lowest
+					else {
+						if (enemyArr[currentSize]->getSprite().getPosition().x > rightmost->getSprite().getPosition().x) {
+							rightmost = enemyArr[currentSize];//getting rightmost
+						}
+						if (enemyArr[currentSize]->getSprite().getPosition().x < leftmost->getSprite().getPosition().x) {
+							leftmost = enemyArr[currentSize];//getting leftmost
+						}
+						if (enemyArr[currentSize]->getSprite().getPosition().y > lowest->getSprite().getPosition().y) {
+							lowest = enemyArr[currentSize];//getting lowest
+						}
+					}
 			 
-			//checking for collisions:
-			if (checkCollisionWithAllBullets(enemyArr[currentSize], window)) {
-				//if collided with a friendly bullet
-				enemyArr[currentSize]->setHealth(enemyArr[currentSize]->getHealth() - 1);//decrease health
-				score += 30;//add 30 score for every bullet hit
-			}
-			//check for collision with UserCraft
-			if (collides(player->getSprite(), enemyArr[currentSize]->getSprite(), window)) {
-				enemyArr[currentSize]->setHealth(0);//kill on collision with user
-				player->setHealth(player->getHealth() - 2);//user health is decreased by 2 on impact with enemycraft
-				score -= 100;//deduct 100 score for hitting enemy craft
-			}
-			//removing dead enemies
-			if (enemyArr[currentSize]->getHealth() <= 0) {//if enemy health == 0 -> pop out of enemyArr
+					//checking for collisions:
+					if (checkCollisionWithAllBullets(enemyArr[currentSize], window)) {
+						//if collided with a friendly bullet
+						enemyArr[currentSize]->setHealth(enemyArr[currentSize]->getHealth() - 1);//decrease health
+						score += 30;//add 30 score for every bullet hit
+					}
+					//check for collision with UserCraft
+					if (collides(player->getSprite(), enemyArr[currentSize]->getSprite(), window)) {
+						enemyArr[currentSize]->setHealth(0);//kill on collision with user
+						player->setHealth(player->getHealth() - 2);//user health is decreased by 2 on impact with enemycraft
+						score -= 100;//deduct 100 score for hitting enemy craft
+						}
+					//removing dead enemies
+					if (enemyArr[currentSize]->getHealth() <= 0) {//if enemy health == 0 -> pop out of enemyArr
 
-				if (enemyArr[currentSize] != nullptr) {
-					delete enemyArr[currentSize];
-					enemyArr[currentSize] = nullptr;
+						if (enemyArr[currentSize] != nullptr) {
+							delete enemyArr[currentSize];
+							enemyArr[currentSize] = nullptr;
+						}
+						enemyArr.erase(enemyArr.begin() + currentSize);
+						currentSize--;
+						score += 100;
+					}
+			    }
+
+					///enemy movement & update leftmost lowest, etc///
+					if (formationReached) {//enemy formation is complete
+						moveFormationNormally(currentSize);
+					}
+			}
+
+			////////////*********to be implemented*************//////////////
+			else {
+
+				wadiBala->draw(window);
+				//initial movement
+				if (!wadiBala->getReached()) {
+					wadiBala->moveToInitial();
 				}
-				enemyArr.erase(enemyArr.begin() + currentSize);
-				currentSize--;
-				score += 100;
-			}
-		}
+				//firing//
+				else {
+					if (BalashouldFire()) {//fire 10% of the time
+						bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
+						bulletArr.push_back(new Bullet(2, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
+						bulletArr.push_back(new Bullet(3, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
+					}
+				}
 
-		///enemy movement & update leftmost lowest, etc///
-		if (formationReached) {//enemy formation is complete
-			moveFormationNormally(currentSize);
-		}
+				if (checkCollisionWithAllBullets(window)) {
+					wadiBala->setHealth(wadiBala->getHealth() - 1);
+				}
+
+				if (wadiBala->getHealth() <= 0) {
+					currentLevel++;
+				}
+			}
+
 	}
-	////////////*********to be implemented*************//////////////
-	else {
-		//bring boss
-	}
+	
 
 	////move the bullets and check for scope////
 	for (int i = 0; i < bulletArr.size(); i++) {
@@ -319,7 +374,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 	}
 
 	//////********winning conditions******///////////
-	if (formationKilled&&currentLevel>=1) {
+	if (formationKilled && currentLevel >= 2) {
 		won = true;
 	}
 }

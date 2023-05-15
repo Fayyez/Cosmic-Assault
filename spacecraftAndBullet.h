@@ -83,7 +83,7 @@ public:
 
 class BigBoss : public Spacecraft {
 public:
-	BigBoss(float x, float y, float xFinal, float yFinal, string fileName);
+	BigBoss(float x, float y, float xFinal, float yFinal);
 	void moveToInitial();
 	~BigBoss();
 };
