@@ -2,6 +2,10 @@
 #include<iostream>
 #include<SFML/Graphics.hpp>
 #include<cstring>
+#include<vector>
+#include<SFML/Audio.hpp>
+#include<SFML/System.hpp>
+#include<random>
 using namespace std;
 
 class Spacecraft {
@@ -41,7 +45,7 @@ public:
 
 class Usercraft : public Spacecraft {
 public:
-	Usercraft(float x, float y, float xFinal, float yFinal, string fileName);
+	Usercraft(float x, float y, float xFinal, float yFinal, string fileName, int health);
 	void moveTo(float x, float y);
 	void moveToInitial();
 	~Usercraft();
@@ -79,7 +83,7 @@ public:
 
 class BigBoss : public Spacecraft {
 public:
-	BigBoss(float x, float y, float xFinal, float yFinal, string fileName);
+	BigBoss(float x, float y, float xFinal, float yFinal);
 	void moveToInitial();
 	~BigBoss();
 };

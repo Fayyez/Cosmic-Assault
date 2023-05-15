@@ -16,7 +16,6 @@ class PLayGame {
 	bool won;//true when user has won the game, i.e, defeated the BigBoss
 	bool lose;//true when enemy crosses border or when userhealth==0
 	bool mode;//true foe expert mode
-	bool allEnemyReached;
 	bool direction;//true if enemy formation is moving rightwards and vice versa
 	Clock clockTotal;
 	Clock clockForFiring;
@@ -27,7 +26,6 @@ class PLayGame {
 	vector<Powerup*> powerupArr;
 	vector<Bullet*> bulletArr;
 	vector<EnemyCraft*> enemyArr;
-	int formation[10][18];
 	/*
 	* formation[][] is used as a reference for creating an enemy formation
 	* with its [row]&[column] defining the x_final & y_final of the enemy craft
@@ -43,13 +41,13 @@ public:
 	void setSpeed(int s);
 	void setWon(bool status);
 	bool getWon() const;
+	bool playerIsDead();
 	bool sessionCompleted();
 	bool formationIsKilled();//if formation is killed, level is incremented
 	void createEnemy(int type, int xFinal, int yFinal);
-	void createFormation();//fills formation[][] according to level every 30sec
-	void moveBullets();//calss move of all bullets and destroyes all bullets that are out of scope of window
-	void draw(RenderWindow& window);
+	void createFormation(bool& status);//fills formation[][] according to level every 30sec
 	bool checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window);
+	bool checkCollisionWithAllBullets(RenderWindow& window);//collision detection for wadibala
 	void moveFormationNormally(int currentSize);//move the enemy formation and also saves the rightmost and leftmost enemy at any given time
 	void play(RenderWindow&window,Event&event);//main method where game is played;
 	~PLayGame();//should empty all the vectors and delete player and bigBoss
