@@ -3,19 +3,50 @@
 #include "screens.h"
 #include "spacecraftAndBullet.h"
 #include "playGame.h"
-
 #include <fstream>
+
 using namespace std;
 using namespace sf;
+
+void updateBackground(int& bgTimer, vector<Sprite>& backgrounds, Sprite& background) {
+    int timerLimit = 30;
+    if (bgTimer < timerLimit) bgTimer++;
+    if (bgTimer >= timerLimit) {
+        backgrounds.push_back(background);
+        bgTimer = 0;
+    }
+
+    for (int i = 0; i < backgrounds.size(); i++) {
+        backgrounds[i].move(0, 10);
+        if (background.getPosition().y >= backgrounds[i].getGlobalBounds().height) {
+            backgrounds.erase(backgrounds.begin() + i);
+        }
+    }
+}
+void drawBackground(RenderWindow& window, vector<Sprite>& backgrounds) {
+    for (int i = 0; i < backgrounds.size(); i++)
+        window.draw(backgrounds[i]);
+}
+
 int main()
 {
    /* cout << mousePos.x << "\t\t";
    * 
    * 
     cout << mousePos.y << endl;*/
+   
+
     RenderWindow window(VideoMode(900, 900), "Cosmic Assault");
     window.setFramerateLimit(120);
     Event event;
+    ///background///
+    Texture bgTexture;
+    bgTexture.loadFromFile("assets/background2.png");
+    int bgTimer = 0;
+    Sprite background(bgTexture);
+    vector<Sprite> backgrounds;
+    background.setPosition(0,-300);
+    ///choices///
     int mainMenuChoice = 0, selectionMenuChoice;
     bool modeMenuChoice = 0;
     while (window.isOpen())
@@ -29,7 +60,9 @@ int main()
             }
         }    
         window.clear();  
-        backgroundAnimation(window);
+        //backgroundAnimation(window);
+        updateBackground(bgTimer, backgrounds, background);
+        drawBackground(window, backgrounds);
 
         if (mainMenuChoice == 0) {
 
@@ -38,7 +71,11 @@ int main()
         if (mainMenuChoice == 1)     // it will go in mode menu
         {
             bool openSelectionMenu = 0;
+            window.clear();
+            updateBackground(bgTimer, backgrounds, background);
+            drawBackground(window, backgrounds);
             modeMenu(window, event,mainMenuChoice,modeMenuChoice);
+            
             if (modeMenuChoice) // for easy mode
             {
 
@@ -57,6 +94,9 @@ int main()
            // choice = 1;
         }
         if (mainMenuChoice == 7) {
+            window.clear();
+            updateBackground(bgTimer, backgrounds, background);
+            drawBackground(window, backgrounds);
             selectionMenu(window, event, mainMenuChoice, selectionMenuChoice);
             cout << "sel menu\n";
         }
@@ -65,6 +105,8 @@ int main()
             PLayGame* game = new PLayGame(modeMenuChoice,selectionMenuChoice);
             do {
                 window.clear();
+                updateBackground(bgTimer, backgrounds, background);
+                drawBackground(window, backgrounds);
                 game->play(window,event);
                 window.display();
 
@@ -73,7 +115,9 @@ int main()
             if (game->getWon()) {
 
                 mainMenuChoice = 0;
-
+                window.clear();
+                updateBackground(bgTimer, backgrounds, background);
+                drawBackground(window, backgrounds);
                 endingScreen(window, event, "GAME WON!");
             }
             cout << "Pleeeeyy\n";
@@ -82,6 +126,8 @@ int main()
         else if (mainMenuChoice == 2)    // will go in leaderboard
         {
             window.clear();
+            updateBackground(bgTimer, backgrounds, background);
+            drawBackground(window, backgrounds);
             leaderBoard(window,event, mainMenuChoice);
             cout << mainMenuChoice << endl;
          //   mainMenuChoice = 0;

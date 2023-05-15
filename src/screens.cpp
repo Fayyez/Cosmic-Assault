@@ -2,8 +2,10 @@
 #include <fstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+
 using namespace std;
 using namespace sf;
+
 void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
 {
     Vector2i mousePos;
@@ -140,8 +142,6 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
 }
 void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & modeMenuChoice)
 {
-
-    window.clear();   // clear the window to print this next screen
     displayHeading(window, "MODE MENU");
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
@@ -190,7 +190,9 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
         }
        
     }
+  
     exitButton(window, event, mainMenuChoice);
+   
 }
 void welcomeScreen(RenderWindow& window)
 {
@@ -237,7 +239,6 @@ void welcomeScreen(RenderWindow& window)
 }
 void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int& selectionMenuChoice)
 {
-    window.clear();   // clear the window to print this next screen
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
     // if clicks at exit button then moves to mainmenu screen
@@ -316,16 +317,6 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     }
     exitButton(window, event, mainMenuChoice);
 }
-void backgroundAnimation(RenderWindow& window)
-{
-  
-    
-
-
-
-
-
-}
 void instructions(RenderWindow& window, Event& event, int& mainMenuChoice)
 {
     Vector2i mousePos;
@@ -358,7 +349,7 @@ void endingScreen(RenderWindow& window, Event& eventt, string text)
     textForMode1.setPosition(Vector2f(100.0f, 300.0f));
 
     while (true) {
-        window.clear();
+        //window.clear();
         sleep(milliseconds(50));
         textForMode1.setCharacterSize(fontSize += 2);        // font size will increase and stop when it enlarges enough tobe in centre
         window.draw(textForMode1);

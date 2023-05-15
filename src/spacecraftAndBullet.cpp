@@ -230,19 +230,19 @@ void Bullet::move() {
 
     if (type == 1) {//verticle movement
         if (isFriendly) {
-            bulletSprite.move(0, -4);//for user bullets
+            bulletSprite.move(0, -6);//for user bullets
         }
         else {
-            bulletSprite.move(0, 4);//for enemy bullets
+            bulletSprite.move(0, 6);//for enemy bullets
         }
     }
 
     else if (type == 2) {//for down right
-        bulletSprite.move(2, 4);
+        bulletSprite.move(3, 6);
     }
 
     else {//for down left movement
-        bulletSprite.move(-2, 4);
+        bulletSprite.move(-3, 6);
     }
 
     xCord = bulletSprite.getPosition().x;
