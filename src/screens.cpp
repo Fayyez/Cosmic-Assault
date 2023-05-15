@@ -29,7 +29,7 @@ void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
 void displayHeading(RenderWindow & window, string heading)
 {
     Font font;
-    font.loadFromFile("fonts/robotic.ttf");
+    font.loadFromFile("fonts/IceCold.ttf");
     Text textForMode1(heading, font, 60);     //  text defining for easy mode
     textForMode1.setLetterSpacing(3);
     textForMode1.setOutlineThickness(3);
@@ -86,7 +86,7 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     displayHeading(window, "MAIN MENU");
     Vector2i mousePos;// defining to determine and handle mouse coordinates on window, it refers Mouse Position
     Font font;
-    font.loadFromFile("fonts/robotic.ttf");  // loading font from a file 
+    font.loadFromFile("fonts/IceCold.ttf");  // loading font from a file 
     Text text_1("New Game", font, 50);   //  assigning string to text, setting font which is loaded and 25 is font size
     text_1.setOutlineThickness(2);
     text_1.setOutlineColor(Color::Red);
@@ -364,7 +364,7 @@ void endingScreen(RenderWindow& window, Event& eventt, string text)
 string getPlayerName(RenderWindow& window, Event& event)
 {
     Font font;
-    if (!font.loadFromFile("fonts/robotic.ttf")) {
+    if (!font.loadFromFile("fonts/IceCold.ttf")) {
         // handle error
     }
 
@@ -498,7 +498,7 @@ void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     Text text[20];
     string line[20];
     Font font;
-    font.loadFromFile("res/robotic.ttf");
+    font.loadFromFile("res/IceCold.ttf");
     int q = 0;
     while (getline(creditsR, line[q])) // Fix: use getline directly instead of checking eof()
     {

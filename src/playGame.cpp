@@ -115,8 +115,8 @@ bool PLayGame::formationIsKilled() {//if formation is killed, level is increment
 void PLayGame::createEnemy(int type, int xFinal, int yFinal) {
 
 	//convert [i][j] of array into xy of window
-	xFinal += 55 * xFinal;
-	yFinal += 55 * yFinal + 50;
+	xFinal += 60 * xFinal;
+	yFinal += 60 * yFinal + 80;
 	//creating random origins:
 	int x = 0, y = 0;
 	random_device rd;
@@ -167,8 +167,8 @@ void PLayGame::createEnemy(int type, int xFinal, int yFinal) {
 void PLayGame::createFormation(bool& status) {//fills formation[][] according to level every 30sec
 
 	//create a rectangle of 4X10 all greens
-	for (int i = 0; i < 13; i++) {
-		for (int j = 0; j < 9; j++) {
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 13; j++) {
 			int temp = 0;
 			(*read) >> temp;
 			if (temp != 0) {
@@ -276,7 +276,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 	bool formationKilled = formationIsKilled();
 	if (player->getReached()) {//enemies and bigboss appear once player has reached initial
 
-		if (!formationKilled || currentLevel < 3) {// || (mode && currentLevel < 7) || (!mode && currentLevel < 5) 
+		if (!formationKilled || currentLevel < 7) {// || (mode && currentLevel < 7) || (!mode && currentLevel < 5) 
 		//if under normal conditions :
 
 			if (formationKilled) {//if enemies are not present on screen
@@ -409,7 +409,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 	}
 
 	//////********winning conditions******///////////
-	if (formationKilled && currentLevel >= 2) {
+	if (formationKilled && currentLevel >= 7) {
 		won = true;
 	}
 }
