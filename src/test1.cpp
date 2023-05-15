@@ -68,12 +68,13 @@ void drawBackground(RenderWindow &window, vector<Sprite> &backgrounds) {
         window.draw(backgrounds[i]);
 }
 
+/*
 int main()
 {
     /*
     Texture bg;
     bg.loadFromFile("assets/background.jpg");
-    */
+    
 
     // initializing variables
     float t1 = 0, t2 = 0;
@@ -164,7 +165,7 @@ int main()
         background.setSize(Vector2f(600.0f, 600.0f));
         background.setTexture(&bg);
         window.draw(background);
-        */
+        
 
         // window clearing
         window.clear(Color::Black);
@@ -195,3 +196,4 @@ int main()
 
     return 0;
 }
+*/

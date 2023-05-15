@@ -1,4 +1,4 @@
-#include"playGame.h"
+#include "playGame.h"
 
 using namespace std;
 using namespace sf;
@@ -75,9 +75,9 @@ PLayGame::PLayGame(bool mode, int craftChoice) {//starts with level 0 for beginn
 	this->timeFromLastFire = clockForFiring.getElapsedTime();
 	string imageName;
 	//craft choice of user
-	if (craftChoice == 1) imageName = "s_ship.png";//********//
-	else if (craftChoice == 2) imageName = "s_ship.png";
-	else if (craftChoice == 3) imageName = "s_ship.png";
+	if (craftChoice == 1) imageName = "assets/s_ship.png";//********//
+	else if (craftChoice == 2) imageName = "assets/s_ship.png";
+	else if (craftChoice == 3) imageName = "assets/s_ship.png";
 	if (mode) {//expert mode
 		currentLevel = 2;
 		speedOfFormation = 6;

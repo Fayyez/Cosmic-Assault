@@ -1,8 +1,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "screens.h"
-#include"spacecraftandbullet.h"
-#include"playGame.h"
+#include "spacecraftAndBullet.h"
+#include "playGame.h"
 
 #include <fstream>
 using namespace std;

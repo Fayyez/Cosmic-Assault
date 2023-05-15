@@ -10,7 +10,7 @@ void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
     mousePos = Mouse::getPosition(window);
 
     Texture EBtexture;    // texture for exit button
-    EBtexture.loadFromFile("EXIT.png");
+    EBtexture.loadFromFile("assets/EXIT.png");
     Sprite exitbutton;      // sprite fro exit button
     exitbutton.setTexture(EBtexture);
     exitbutton.setPosition(838.0f, 40.0f);   //defining posotion at down left corner
@@ -27,7 +27,7 @@ void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
 void displayHeading(RenderWindow & window, string heading)
 {
     Font font;
-    font.loadFromFile("res/robotic.ttf");
+    font.loadFromFile("fonts/robotic.ttf");
     Text textForMode1(heading, font, 60);     //  text defining for easy mode
     textForMode1.setLetterSpacing(3);
     textForMode1.setOutlineThickness(3);
@@ -84,7 +84,7 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     displayHeading(window, "MAIN MENU");
     Vector2i mousePos;// defining to determine and handle mouse coordinates on window, it refers Mouse Position
     Font font;
-    font.loadFromFile("res/robotic.ttf");  // loading font from a file 
+    font.loadFromFile("fonts/robotic.ttf");  // loading font from a file 
     Text text_1("New Game", font, 50);   //  assigning string to text, setting font which is loaded and 25 is font size
     text_1.setOutlineThickness(2);
     text_1.setOutlineColor(Color::Red);
@@ -116,7 +116,7 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     window.draw(text_4);
     static Sprite spaceShip;   // creates ship which will move left write in main screen
     static Texture texShip;     // static used to avoid redeclaration and redifination of ship every time loop reiterrates
-    texShip.loadFromFile("sec_ship.png");     
+    texShip.loadFromFile("assets/sec_ship.png");     
     spaceShip.setTexture(texShip);
     static int shipX = 350, shipY = 700;  // defining coordinates at end of window
  
@@ -146,7 +146,7 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
     Font font;
-    font.loadFromFile("res/Icecold.ttf");
+    font.loadFromFile("fonts/Icecold.ttf");
     RectangleShape mode1, mode2;  // rectangle shapes for options of 2 modes as easy and hard
     mode1.setSize(Vector2f(350.0f, 50.0f));  // size for recatngle box 
     mode1.setFillColor(Color::Green);       // size of rectangle box 
@@ -196,19 +196,19 @@ void welcomeScreen(RenderWindow& window)
 {
     RectangleShape initial_background;   // background adjust to rectangle shape to be on full window
     Texture  i_background;
-    i_background.loadFromFile("welcome.png");
+    i_background.loadFromFile("assets/welcome.png");
     initial_background.setTexture(&i_background);
     initial_background.setSize(Vector2f(900.0f, 900.0f));    // setting according to window size
     initial_background.setTexture(&i_background);
     int moveCosmic = 5, moveAssault = -7;    // first one will move cosmic sprite to right, 2nd will move assault sprite to left
     Sprite cosmic;
     Texture cos;
-    cos.loadFromFile("cosmic.png");
+    cos.loadFromFile("assets/cosmic.png");
     cosmic.setTexture(cos);
     cosmic.setPosition(-30, 250);
     Sprite assault;
     Texture assau;
-    assau.loadFromFile("assault.png");
+    assau.loadFromFile("assets/assault.png");
     assault.setTexture(assau);
     assault.setPosition(800, 370);
 
@@ -249,7 +249,7 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
         }
     }
      Font font;
-    font.loadFromFile("res/Icecold.ttf");
+    font.loadFromFile("fonts/Icecold.ttf");
     CircleShape choice1, choice2,choice3;  // rectangle shapes for options of 2 modes as easy and hard
     choice1.setRadius(100);
     choice1.setOutlineThickness(5.f);
@@ -261,7 +261,7 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     //mode1.setPosition
     window.draw(choice1); Sprite ship1;
     Texture tShip1;
-    tShip1.loadFromFile("s_ship.png");
+    tShip1.loadFromFile("assets/s_ship.png");
     ship1.setTexture(tShip1);
     ship1.setPosition(Vector2f(190.0f, 300.0f));
     window.draw(ship1);
@@ -277,7 +277,7 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     window.draw(choice2);
     Sprite ship2;
     Texture tShip2;
-    tShip2.loadFromFile("s_ship.png");
+    tShip2.loadFromFile("assets/s_ship.png");
     ship2.setTexture(tShip2);
     ship2.setPosition(Vector2f(418.5f, 300.0f));
     window.draw(ship2);
@@ -293,7 +293,7 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     window.draw(choice3);
     Sprite ship3;
     Texture tShip3;
-    tShip3.loadFromFile("s_ship.png");
+    tShip3.loadFromFile("assets/s_ship.png");
     ship3.setTexture(tShip3);
     ship3.setPosition(Vector2f(650.0f, 300.0f));
     window.draw(ship3);
@@ -339,7 +339,7 @@ void instructions(RenderWindow& window, Event& event, int& mainMenuChoice)
     }
     Sprite instruction;  // instructions picture;
     Texture intru;
-    intru.loadFromFile("instructio.png");
+    intru.loadFromFile("assets/instructio.png");
     instruction.setTexture(intru);
     instruction.setPosition(0, 0);
     window.draw(instruction);
@@ -349,7 +349,7 @@ void endingScreen(RenderWindow& window, Event& eventt, string text)
 {
     int fontSize = 1;
     Font font;
-    font.loadFromFile("res/Icecold.ttf");
+    font.loadFromFile("fonts/Icecold.ttf");
     Text textForMode1(text, font, fontSize);     //  text defining for easy mode
     textForMode1.setLetterSpacing(4);
     textForMode1.setOutlineThickness(3);
@@ -373,7 +373,7 @@ void endingScreen(RenderWindow& window, Event& eventt, string text)
 string getPlayerName(RenderWindow& window, Event& event)
 {
     Font font;
-    if (!font.loadFromFile("res/robotic.ttf")) {
+    if (!font.loadFromFile("fonts/robotic.ttf")) {
         // handle error
     }
 
@@ -433,8 +433,8 @@ void leaderBoard(RenderWindow& window, Event& event, int& mainMenuChoice)
 {
 
     Font font;
-    font.loadFromFile("res/Icecold.ttf");
-    ifstream playerR("players.txt"),scoreR("score.txt");
+    font.loadFromFile("fonts/Icecold.ttf");
+    ifstream playerR("txt/players.txt"),scoreR("txt/score.txt");
     string players[7];
     string arr[7] {};
     if (!playerR.is_open()) cout << "File player not opened in leaderboard\n";
@@ -501,7 +501,7 @@ void leaderBoard(RenderWindow& window, Event& event, int& mainMenuChoice)
 }
 void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
 {
-    ifstream creditsR("credits.txt");
+    ifstream creditsR("txt/credits.txt");
     int posX = 300, posY = 850;
     int fontSize = 20;
     Text text[20];

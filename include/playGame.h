@@ -3,7 +3,7 @@
 #include<SFML/Audio.hpp>
 #include<SFML/Graphics.hpp>
 #include<SFML/System.hpp>
-#include"spacecraftANdBullet.h"
+#include "spacecraftAndBullet.h"
 #include<vector>
 using namespace sf;
 using namespace std;

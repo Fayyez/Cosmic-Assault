@@ -107,7 +107,7 @@ EnemyCraft::~EnemyCraft() {}
 
 ///definitions for EnemyRed///
 EnemyRed::EnemyRed(float xFinal, float yFinal) :
-    EnemyCraft(-70.0, 710, xFinal, yFinal, "enemy_ship.png", 2, 3) {
+    EnemyCraft(-70.0, 710, xFinal, yFinal, "assets/enemy_ship.png", 2, 3) {
 }//
 void EnemyRed::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -130,7 +130,7 @@ EnemyRed::~EnemyRed() {}
 
 ///definitions for enemyBlue///
 EnemyBlue::EnemyBlue(float xFinal, float yFinal) : 
-    EnemyCraft(-80.0, 650, xFinal, yFinal, "enemy_ship.png", 1, 1.5) {
+    EnemyCraft(-80.0, 650, xFinal, yFinal, "assets/enemy_ship.png", 1, 1.5) {
 }//C health = 1
 void EnemyBlue::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -153,7 +153,7 @@ EnemyBlue::~EnemyBlue() {}
 
 ///definitions for enemyGreen///
 EnemyGreen::EnemyGreen(float xFinal, float yFinal):
-    EnemyCraft(920.0, 700, xFinal, yFinal, "enemy_ship.png", 1, 3) {
+    EnemyCraft(920.0, 700, xFinal, yFinal, "assets/enemy_ship.png", 1, 3) {
 }
 void EnemyGreen::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -176,7 +176,8 @@ EnemyGreen::~EnemyGreen() {}
 
 ///definitions for BigBoss///
 BigBoss::BigBoss(float x, float y, float xFinal, float yFinal):
-    Spacecraft(x,y,xFinal,yFinal,"bigBoss.png", 5, 5) {
+    //Spacecraft(x,y,xFinal,yFinal,"assets/bigBoss.png", 5, 5) {
+    Spacecraft(x,y,xFinal,yFinal,"assets/doggo_villain.png", 5, 5) {
 }
 void BigBoss::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -210,8 +211,8 @@ Bullet::Bullet(int type, bool isFriendly, int x, int y) {
     xCord = x;
     yCord = y;
     this->isAlive = true;
-    if(isFriendly)  this->bulletTexture.loadFromFile("bullet.png");
-    else  this->bulletTexture.loadFromFile("enemy-bullet1.png");
+    if(isFriendly)  this->bulletTexture.loadFromFile("assets/bullet.png");
+    else  this->bulletTexture.loadFromFile("assets/enemy-bullet1.png");
     this->bulletSprite.setTexture(this->bulletTexture);
     bulletSprite.setPosition(xCord, yCord);
 }
