@@ -27,7 +27,6 @@ void drawBackground(RenderWindow& window, vector<Sprite>& backgrounds) {
     for (int i = 0; i < backgrounds.size(); i++)
         window.draw(backgrounds[i]);
 }
-
 int main()
 {
    /* cout << mousePos.x << "\t\t";

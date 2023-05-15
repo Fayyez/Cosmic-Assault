@@ -5,6 +5,7 @@
 #include<SFML/System.hpp>
 #include "spacecraftAndBullet.h"
 #include<vector>
+#include<fstream>
 using namespace sf;
 using namespace std;
 
@@ -34,6 +35,7 @@ class PLayGame {
 	EnemyCraft* rightmost;
 	EnemyCraft* leftmost;
 	EnemyCraft* lowest;
+	ifstream* read;
 
 public:
 

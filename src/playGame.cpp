@@ -82,15 +82,17 @@ PLayGame::PLayGame(bool mode, int craftChoice) {//starts with level 0 for beginn
 		currentLevel = 2;
 		speedOfFormation = 6;
 		player = new Usercraft(370, 1000, 370, 740, imageName, 50);//*****HEALTH PART TO BE IMPLEMENTED*********//
+		read = new ifstream("txt/difficult.txt");
 	}
 	else {//beginners mode
 		currentLevel = 0;
 		speedOfFormation = 2;
 		///*********HEALTH PART TO BE IMPLEMENTED&*******************///
 		player = new Usercraft(370, 1000, 370, 740, imageName, 100);
+		read = new ifstream("txt/easy.txt");
 	}
 	wadiBala = new BigBoss(350, -120, 350,200);
-	//formation[10][18] = {0};//start with an empty formation
+	
 }
 void PLayGame::setSpeed(int s) { speedOfFormation = s; }
 void PLayGame::setWon(bool status) { won = status; }
@@ -115,32 +117,66 @@ void PLayGame::createEnemy(int type, int xFinal, int yFinal) {
 	//convert [i][j] of array into xy of window
 	xFinal += 55 * xFinal;
 	yFinal += 55 * yFinal + 50;
+	//creating random origins:
+	int x = 0, y = 0;
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> distribution(0, 5);
+
+	// Generate a random number between 0 and 4 (inclusive)
+	int randomOrigin = distribution(gen);//will give 0 - 4 randomnly
+	//assigning origin:
+	switch (randomOrigin) {
+	case 0:
+		x = 400;
+		y = -60;
+		break;
+	case 1:
+		x = 920;
+		y = 500;
+		break;
+	case 2:
+		x = 935;
+		y = 660;
+		break;
+	case 3:
+		x = -60;
+		y = 350;
+		break;
+	case 4:
+		x = -70;
+		y = 510;
+		break;
+	default:
+		x = -80;
+		y = 720;
+		break;
+	}
 
 	//creating enemies of responding type
 	if (type == 1) {
-		enemyArr.push_back(new EnemyGreen(xFinal,yFinal));
+		enemyArr.push_back(new EnemyGreen(x, y, xFinal, yFinal));
 	}
 	else if (type == 2) {
-		enemyArr.push_back(new EnemyRed(xFinal, yFinal));
+		enemyArr.push_back(new EnemyRed(x, y, xFinal, yFinal));
 	}
 	else if (type == 3) {
-		enemyArr.push_back(new EnemyBlue(xFinal, yFinal));
+		enemyArr.push_back(new EnemyBlue(x, y, xFinal, yFinal));
 	}
 }
 void PLayGame::createFormation(bool& status) {//fills formation[][] according to level every 30sec
 
-	if (currentLevel == 0 || currentLevel == 2) {//==2 is to be removed later when more formations are added
-		//create a rectangle of 4X10 all greens
-		for (int i = 1; i < 5; i++) {
-			for (int j = 4; j < 14; j++) {
-				//formation[i][j] = 1;
-				createEnemy(1, j, i);
+	//create a rectangle of 4X10 all greens
+	for (int i = 0; i < 13; i++) {
+		for (int j = 0; j < 9; j++) {
+			int temp = 0;
+			(*read) >> temp;
+			if (temp != 0) {
+				createEnemy(temp, j, i);
 			}
 		}
-		status = !status;
 	}
-
-	//********8more formations to be added*******//
+	status = !status;
 }
 bool PLayGame::checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window) {
 	//return true if spacecraft sprties collided with a bullet
@@ -240,7 +276,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 	bool formationKilled = formationIsKilled();
 	if (player->getReached()) {//enemies and bigboss appear once player has reached initial
 
-		if (!formationKilled || currentLevel < 1) {// || (mode && currentLevel < 7) || (!mode && currentLevel < 5) 
+		if (!formationKilled || currentLevel < 3) {// || (mode && currentLevel < 7) || (!mode && currentLevel < 5) 
 		//if under normal conditions :
 
 			if (formationKilled) {//if enemies are not present on screen
