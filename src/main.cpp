@@ -35,7 +35,6 @@ int main()
    * 
     cout << mousePos.y << endl;*/
    
-
     RenderWindow window(VideoMode(900, 900), "Cosmic Assault");
     window.setFramerateLimit(120);
     Event event;
