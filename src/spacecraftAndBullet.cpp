@@ -106,8 +106,8 @@ void EnemyCraft::moveToInitial() {
 EnemyCraft::~EnemyCraft() {}
 
 ///definitions for EnemyRed///
-EnemyRed::EnemyRed(float xFinal, float yFinal) :
-    EnemyCraft(-70.0, 710, xFinal, yFinal, "assets/enemy_ship.png", 2, 3) {
+EnemyRed::EnemyRed(float x, float y, float xFinal, float yFinal) :
+    EnemyCraft(x, y, xFinal, yFinal, "assets/enemy_ship.png", 2, 3) {
 }//
 void EnemyRed::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -129,8 +129,8 @@ void EnemyRed::moveToInitial() {
 EnemyRed::~EnemyRed() {}
 
 ///definitions for enemyBlue///
-EnemyBlue::EnemyBlue(float xFinal, float yFinal) : 
-    EnemyCraft(-80.0, 650, xFinal, yFinal, "assets/enemy_ship.png", 1, 1.5) {
+EnemyBlue::EnemyBlue(float x, float y, float xFinal, float yFinal) :
+    EnemyCraft(x, y, xFinal, yFinal, "assets/enemy_ship.png", 1, 1.5) {
 }//C health = 1
 void EnemyBlue::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -152,8 +152,8 @@ void EnemyBlue::moveToInitial() {
 EnemyBlue::~EnemyBlue() {}
 
 ///definitions for enemyGreen///
-EnemyGreen::EnemyGreen(float xFinal, float yFinal):
-    EnemyCraft(920.0, 700, xFinal, yFinal, "assets/enemy_ship.png", 1, 3) {
+EnemyGreen::EnemyGreen(float x, float y, float xFinal, float yFinal):
+    EnemyCraft(x, y, xFinal, yFinal, "assets/enemy_ship.png", 1, 3) {
 }
 void EnemyGreen::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -230,19 +230,19 @@ void Bullet::move() {
 
     if (type == 1) {//verticle movement
         if (isFriendly) {
-            bulletSprite.move(0, -4);//for user bullets
+            bulletSprite.move(0, -6);//for user bullets
         }
         else {
-            bulletSprite.move(0, 4);//for enemy bullets
+            bulletSprite.move(0, 6);//for enemy bullets
         }
     }
 
     else if (type == 2) {//for down right
-        bulletSprite.move(2, 4);
+        bulletSprite.move(3, 6);
     }
 
     else {//for down left movement
-        bulletSprite.move(-2, 4);
+        bulletSprite.move(-3, 6);
     }
 
     xCord = bulletSprite.getPosition().x;

@@ -62,21 +62,21 @@ public:
 //and different healths
 class EnemyRed : public EnemyCraft {
 public:
-	EnemyRed(float xFinal, float yFinal);
+	EnemyRed(float x, float y, float xFinal, float yFinal);
 	void moveToInitial();
 	~EnemyRed();
 };
 
 class EnemyBlue : public EnemyCraft {
 public:
-	EnemyBlue(float xFinal, float yFinal);
+	EnemyBlue(float x, float y, float xFinal, float yFinal);
 	void moveToInitial();
 	~EnemyBlue();
 };
 
 class EnemyGreen : public EnemyCraft {
 public:
-	EnemyGreen(float xFinal, float yFinal);
+	EnemyGreen(float x, float y, float xFinal, float yFinal);
 	void moveToInitial();
 	~EnemyGreen();
 };
