@@ -176,7 +176,7 @@ EnemyGreen::~EnemyGreen() {}
 ///definitions for BigBoss///
 BigBoss::BigBoss(float x, float y, float xFinal, float yFinal):
     //Spacecraft(x,y,xFinal,yFinal,"assets/bigBoss.png", 5, 5) {
-    Spacecraft(x,y,xFinal,yFinal,"assets/doggo_villain.png", 5, 3) {
+    Spacecraft(x,y,xFinal,yFinal,"assets/doggo_villain.png", 5, 1) {
 }
 void BigBoss::moveToInitial() {
     float dx = getXFinal() - getX();

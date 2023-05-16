@@ -277,8 +277,8 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 	bool formationKilled = formationIsKilled();
 	if (player->getReached()) {//enemies and bigboss appear once player has reached initial
 
-		if (!formationKilled || currentLevel < 7) {// || (mode && currentLevel < 7) || (!mode && currentLevel < 5) 
-		//if under normal conditions :
+		if (!formationKilled || (mode && currentLevel < 7) || (!mode && currentLevel < 5)) {
+			//if under normal conditions :
 
 			if (formationKilled) {//if enemies are not present on screen
 				createFormation(formationKilled);
@@ -319,7 +319,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 						lowest = enemyArr[currentSize];//getting lowest
 					}
 				}
-			 
+
 				//checking for collisions:
 				if (checkCollisionWithAllBullets(enemyArr[currentSize], window)) {
 					//if collided with a friendly bullet
@@ -331,7 +331,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 					enemyArr[currentSize]->setHealth(0);//kill on collision with user
 					player->setHealth(player->getHealth() - 2);//user health is decreased by 2 on impact with enemycraft
 					score -= 100;//deduct 100 score for hitting enemy craft
-					}
+				}
 				//removing dead enemies
 				if (enemyArr[currentSize]->getHealth() <= 0) {//if enemy health == 0 -> pop out of enemyArr
 
@@ -345,35 +345,68 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 				}
 			}
 
-				///enemy movement & update leftmost lowest, etc///
-				if (formationReached) {//enemy formation is complete
-					moveFormationNormally(currentSize);
-				}
+			///enemy movement & update leftmost lowest, etc///
+			if (formationReached) {//enemy formation is complete
+				moveFormationNormally(currentSize);
+			}
 		}
 
-		////////////*********to be implemented*************//////////////
+		////////////*********BigBoss************//////////////
 		else {
 
 			wadiBala->draw(window);
-			//initial movement
+			//movements
 			if (!wadiBala->getReached()) {
 				wadiBala->moveToInitial();
 			}
-			//firing//
 			else {
-				if (BalashouldFire()) {//fire 10% of the time
-					bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
-					bulletArr.push_back(new Bullet(2, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
-					bulletArr.push_back(new Bullet(3, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
-				}
-			}
+				int x = 0, y = 0;
+				random_device rd;
+				mt19937 gen(rd());
+				uniform_int_distribution<int> distribution(0, 6);
 
+				// Generate a random number between 0 and 4 (inclusive)
+				int randomFinal = distribution(gen);//will give 0 - 4 randomnly
+				//assigning origin:
+				switch (randomFinal) {
+
+				case 0:
+					x = 120;
+					y = 100;
+					break;
+				case 1:
+					x = 400;
+					y = 500;
+					break;
+				case 2:
+					x = 300;
+					y = 150;
+					break;
+				case 3:
+					x = 730;
+					y = 300;
+					break;
+				default:
+					x = 350;
+					y = 200;
+					break;
+				}
+				wadiBala->setXFinal(x);
+				wadiBala->setYFinal(y);
+				wadiBala->setReached(0);
+			}
+			//shooting***********************************************
+			if (BalashouldFire()) {//fire 10% of the time
+				bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
+				bulletArr.push_back(new Bullet(2, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
+				bulletArr.push_back(new Bullet(3, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
+			}
 			if (checkCollisionWithAllBullets(window)) {
 				wadiBala->setHealth(wadiBala->getHealth() - 1);
 			}
 
 			if (wadiBala->getHealth() <= 0) {
-				currentLevel++;
+				won = true;
 			}
 		}
 	}
