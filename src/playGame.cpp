@@ -97,13 +97,14 @@ PLayGame::PLayGame(bool mode, int craftChoice) {//starts with level 0 for beginn
 void PLayGame::setSpeed(int s) { speedOfFormation = s; }
 void PLayGame::setWon(bool status) { won = status; }
 bool PLayGame::getWon() const { return won; }
+bool PLayGame::getLose() const { return lose; }
 bool PLayGame::playerIsDead() {
 	if (player->getHealth() == 0) {
 		return false;
 	}
 	else return true;
 }
-bool  PLayGame::sessionCompleted() { //returns true if it is time to bring out bigBoss
+bool PLayGame::sessionCompleted() { //returns true if it is time to bring out bigBoss
 	totalTime = clockTotal.getElapsedTime();
 	return (timeFromLastFire.asSeconds() > 160); 
 }
@@ -409,8 +410,14 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 	}
 
 	//////********winning conditions******///////////
-	if (formationKilled && currentLevel >= 7) {
+	if (formationKilled && ((mode && currentLevel >= 7) || (!mode && currentLevel >= 5)) && wadiBala->getHealth() == 0) {
+		//if no formation + level reached + wadibala is dead -> win
 		won = true;
+	}
+	else if (player->getHealth() == 0 || lowest!=nullptr) {
+		if (lowest->getY()>=900)
+		//if player died or enemy ship crossed border
+		lose = true;
 	}
 }
 PLayGame::~PLayGame() {
@@ -440,4 +447,6 @@ PLayGame::~PLayGame() {
 		delete wadiBala;
 		wadiBala = nullptr;
 	}
+	delete read;
+	read = nullptr;
 }

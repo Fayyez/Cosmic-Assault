@@ -73,25 +73,11 @@ int main()
             updateBackground(bgTimer, backgrounds, background);
             drawBackground(window, backgrounds);
             modeMenu(window, event,mainMenuChoice,modeMenuChoice);
-            
-            if (modeMenuChoice) // for easy mode
-            {
-
-
-                openSelectionMenu = 1;
-            }
-            else if (!modeMenuChoice) // for expert mode
-            {
-
-
-                openSelectionMenu = 1;
-            }
-        
-
             cout << mainMenuChoice << endl;
            // choice = 1;
         }
         if (mainMenuChoice == 7) {
+
             window.clear();
             updateBackground(bgTimer, backgrounds, background);
             drawBackground(window, backgrounds);
@@ -108,7 +94,7 @@ int main()
                 game->play(window,event);
                 window.display();
 
-            } while (!game->getWon());
+            } while (!game->getWon() && !game->getLose());
 
             if (game->getWon()) {
 
@@ -117,6 +103,13 @@ int main()
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
                 endingScreen(window, event, "GAME WON!");
+            }
+            else if(game->getLose()) {
+                mainMenuChoice = 0;
+                window.clear();
+                updateBackground(bgTimer, backgrounds, background);
+                drawBackground(window, backgrounds);
+                endingScreen(window, event, "YOU LOST!");
             }
             cout << "Pleeeeyy\n";
             delete game;

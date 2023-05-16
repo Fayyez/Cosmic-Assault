@@ -42,6 +42,7 @@ public:
 	PLayGame(bool mode, int craftChoice);//starts with level 0 for beginner & 2 for expert
 	void setSpeed(int s);
 	void setWon(bool status);
+	bool getLose() const;
 	bool getWon() const;
 	bool playerIsDead();
 	bool sessionCompleted();

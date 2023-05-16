@@ -37,8 +37,7 @@ void Spacecraft::setSprite(string fileName) {
 }
 void Spacecraft::setReached(bool status) { reached = status; }
 float Spacecraft::getX() { return xCord; }
-float Spacecraft::getY()
-{ return yCord; }
+float Spacecraft::getY() { return yCord; }
 float Spacecraft::getXFinal() { return xFinal; }
 float Spacecraft::getYFinal() { return yFinal; }
 float Spacecraft::getSpeed() { return speed; }
@@ -177,7 +176,7 @@ EnemyGreen::~EnemyGreen() {}
 ///definitions for BigBoss///
 BigBoss::BigBoss(float x, float y, float xFinal, float yFinal):
     //Spacecraft(x,y,xFinal,yFinal,"assets/bigBoss.png", 5, 5) {
-    Spacecraft(x,y,xFinal,yFinal,"assets/doggo_villain.png", 5, 5) {
+    Spacecraft(x,y,xFinal,yFinal,"assets/doggo_villain.png", 5, 3) {
 }
 void BigBoss::moveToInitial() {
     float dx = getXFinal() - getX();
