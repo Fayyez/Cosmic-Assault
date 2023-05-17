@@ -203,15 +203,14 @@ BigBoss::~BigBoss() {}
     * type 2 = down right
     * type 3 = down left
 */
-Bullet::Bullet(int type, bool isFriendly, int x, int y) {
+Bullet::Bullet(int type, bool isFriendly, int x, int y, string filename) {
  
     this->type = type;
     this->isFriendly = isFriendly;
     xCord = x;
     yCord = y;
     this->isAlive = true;
-    if(isFriendly)  this->bulletTexture.loadFromFile("assets/bullet.png");
-    else  this->bulletTexture.loadFromFile("assets/enemy-bullet1.png");
+    this->bulletTexture.loadFromFile(filename);
     this->bulletSprite.setTexture(this->bulletTexture);
     bulletSprite.setPosition(xCord, yCord);
 }

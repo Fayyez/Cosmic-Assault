@@ -3,7 +3,7 @@
 using namespace std;
 using namespace sf;
 
-bool shouldFire(bool mode) {//returns true 10% of the time if status is true and 7%if status is false
+bool shouldFire(bool& mode) {//returns true 10% of the time if status is true and 7%if status is false
 	
 	random_device rd;
 	mt19937 gen(rd());
@@ -12,7 +12,7 @@ bool shouldFire(bool mode) {//returns true 10% of the time if status is true and
 	float chances;
 	chances = dis(gen);
 	if (mode) {//for expert mode = 10%
-		return (chances <= 0.001f);
+		return (chances <= 0.0007f);
 	}
 	else {//for beginers mode 7%
 
@@ -20,7 +20,7 @@ bool shouldFire(bool mode) {//returns true 10% of the time if status is true and
 	}
 
 }
-bool BalashouldFire() {
+bool BalashouldFire(bool& mode) {
 
 	random_device rd;
 	mt19937 gen(rd());
@@ -28,7 +28,13 @@ bool BalashouldFire() {
 
 	float chances;
 	chances = dis(gen);
-    return (chances <= 0.01f);
+	if (mode) {//for expert mode = 10%
+		return (chances <= 0.007f);
+	}
+	else {//for beginers mode 7%
+
+		return (chances <= 0.004f);
+	}
 }
 bool collides(Sprite& ship, Sprite& sprite2, RenderWindow& window)
 {
@@ -116,8 +122,8 @@ bool PLayGame::formationIsKilled() {//if formation is killed, level is increment
 void PLayGame::createEnemy(int type, int xFinal, int yFinal) {
 
 	//convert [i][j] of array into xy of window
-	xFinal += 60 * xFinal;
-	yFinal += 60 * yFinal + 80;
+	xFinal += 60 * xFinal + 20;
+	yFinal += 60 * yFinal + 50;
 	//creating random origins:
 	int x = 0, y = 0;
 	random_device rd;
@@ -253,7 +259,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 
 		if (Keyboard::isKeyPressed(Keyboard::Space) && timeFromLastFire >= cooldownTime) {
 			clockForFiring.restart();
-			bulletArr.push_back(new Bullet(1, 1, player->getX() + 32, player->getY()));
+			bulletArr.push_back(new Bullet(1, 1, player->getX() + 32, player->getY(), "assets/bullet.png"));
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Right) && player->getX() < 810) {
 			player->moveSprite(5, 0);
@@ -297,7 +303,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 				//enemy firing
 				if (shouldFire(mode)) {
 					//will create a non-friendly bullet of type 1
-					bulletArr.push_back(new Bullet(1, 0, enemyArr[currentSize]->getX() + 20, enemyArr[currentSize]->getY() + 40));
+					bulletArr.push_back(new Bullet(1, 0, enemyArr[currentSize]->getX() + 20, enemyArr[currentSize]->getY() + 40, "assets/enemy-bullet.png"));
 				}
 
 				//moving to initial positions
@@ -353,7 +359,7 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 
 		////////////*********BigBoss************//////////////
 		else {
-
+			//printing on window
 			wadiBala->draw(window);
 			//movements
 			if (!wadiBala->getReached()) {
@@ -395,12 +401,34 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 				wadiBala->setYFinal(y);
 				wadiBala->setReached(0);
 			}
-			//shooting***********************************************
-			if (BalashouldFire()) {//fire 10% of the time
-				bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
-				bulletArr.push_back(new Bullet(2, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
-				bulletArr.push_back(new Bullet(3, 0, wadiBala->getX() + 45, wadiBala->getY() + 130));
+			//shooting
+			if (BalashouldFire(mode)) {//fires 7% of the time
+				int x = 0, y = 0;
+				random_device rd;
+				mt19937 gen(rd());
+				uniform_int_distribution<int> distribution(0,2);
+
+				// Generate a random number between 0 and 4 (inclusive)
+				int randomFinal = distribution(gen);//will give 0 - 4 randomnly
+				//assigning origin:
+				switch (randomFinal) {
+
+				case 0:
+					bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
+					bulletArr.push_back(new Bullet(2, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
+					bulletArr.push_back(new Bullet(3, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
+					break;
+				case 1:
+					bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
+					bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 35, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
+					bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 55, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
+					break;
+				default:
+					bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/sonicBoom.png"));
+					break;
+				}
 			}
+			//collision detection
 			if (checkCollisionWithAllBullets(window)) {
 				wadiBala->setHealth(wadiBala->getHealth() - 1);
 			}
@@ -410,7 +438,6 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 			}
 		}
 	}
-	
 
 	////move the bullets and check for scope////
 	for (int i = 0; i < bulletArr.size(); i++) {
@@ -442,15 +469,15 @@ void PLayGame::play(RenderWindow& window, Event& event) {
 		bulletArr[i]->move();
 	}
 
-	//////********winning conditions******///////////
+	//////********ending conditions******///////////
 	if (formationKilled && ((mode && currentLevel >= 7) || (!mode && currentLevel >= 5)) && wadiBala->getHealth() == 0) {
 		//if no formation + level reached + wadibala is dead -> win
 		won = true;
 	}
-	else if (player->getHealth() == 0 || lowest!=nullptr) {
-		if (lowest->getY()>=900)
-		//if player died or enemy ship crossed border
-		lose = true;
+	else if (player->getHealth() == 0 || lowest != nullptr) {
+		if (lowest->getY() >= 900)
+			//if player died or enemy ship crossed border
+			lose = true;
 	}
 }
 PLayGame::~PLayGame() {

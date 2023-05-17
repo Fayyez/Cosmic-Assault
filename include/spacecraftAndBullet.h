@@ -102,7 +102,7 @@ class Bullet {
 	sf::Texture bulletTexture;
 	sf::Sprite bulletSprite;
 public:
-	Bullet(int type, bool isFriendly, int x, int y);
+	Bullet(int type, bool isFriendly, int x, int y, string filename);
 	void setSprite(string fileName);
 	bool getIsFriendly();
 	int getType();
