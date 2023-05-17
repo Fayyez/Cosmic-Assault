@@ -35,7 +35,7 @@ void displayHeading(RenderWindow & window, string heading)
     textForMode1.setOutlineThickness(3);
     textForMode1.setFillColor(Color::Yellow);
     textForMode1.setOutlineColor(Color::Black);
-    textForMode1.setPosition(Vector2f(150.0f, 30.0f));
+    textForMode1.setPosition(Vector2f(100.0f, 30.0f));
     window.draw(textForMode1);
     RectangleShape mode1;  // rectangle shapes for options of 2 modes as easy and hard
     mode1.setSize(Vector2f(900.0f, 20.0f));  // size for recatngle box 
@@ -83,7 +83,7 @@ void textFillColor(Vector2i mousePos,Text & text, int y_i, int y_f, int x_i, int
 }
 void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
 {
-    displayHeading(window, "MAIN MENU");
+    displayHeading(window, "  MAIN MENU");
     Vector2i mousePos;// defining to determine and handle mouse coordinates on window, it refers Mouse Position
     Font font;
     font.loadFromFile("fonts/IceCold.ttf");  // loading font from a file 
@@ -142,7 +142,7 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
 }
 void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & modeMenuChoice)
 {
-    displayHeading(window, "MODE MENU");
+    displayHeading(window, " MODE MENU");
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
     Font font;
@@ -239,6 +239,7 @@ void welcomeScreen(RenderWindow& window)
 }
 void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int& selectionMenuChoice)
 {
+    displayHeading(window,"Select Ship");
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
     // if clicks at exit button then moves to mainmenu screen
@@ -257,14 +258,14 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     choice1.setOutlineColor(Color::Red);
     //choice1.setSize(Vector2f(150.0f, 150.0f));  // size for recatngle box 
     choice1.setFillColor(Color::Cyan);       // size of rectangle box 
-    choice1.setPosition(Vector2f(130.0f, 250.0f));
-    circleFillColor(mousePos, choice1, 250, 450, 130, 330);// fill mode1 which is a box, with red colour when cursor is places
+    choice1.setPosition(Vector2f(130.0f, 550.0f));
+    circleFillColor(mousePos, choice1, 550, 750, 130, 330);// fill mode1 which is a box, with red colour when cursor is places
     //mode1.setPosition
     window.draw(choice1); Sprite ship1;
     Texture tShip1;
     tShip1.loadFromFile("assets/s_ship.png");
     ship1.setTexture(tShip1);
-    ship1.setPosition(Vector2f(190.0f, 300.0f));
+    ship1.setPosition(Vector2f(190.0f, 600.0f));
     window.draw(ship1);
 
     choice2.setRadius(100);
@@ -272,15 +273,15 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     choice2.setOutlineColor(Color::Red);
    // choice2.setSize(Vector2f(150.0f, 150.0f));  // size for recatngle box 
     choice2.setFillColor(Color::Cyan);       // size of rectangle box 
-    choice2.setPosition(Vector2f(360.0f, 250.0f));
-    circleFillColor(mousePos, choice2, 250, 450, 360, 560);// fill mode1 which is a box, with red colour when cursor is places
+    choice2.setPosition(Vector2f(360.0f, 550.0f));
+    circleFillColor(mousePos, choice2, 550, 750, 360, 560);// fill mode1 which is a box, with red colour when cursor is places
     //mode1.setPosition
     window.draw(choice2);
     Sprite ship2;
     Texture tShip2;
     tShip2.loadFromFile("assets/s_ship.png");
     ship2.setTexture(tShip2);
-    ship2.setPosition(Vector2f(418.5f, 300.0f));
+    ship2.setPosition(Vector2f(418.5f, 600.0f));
     window.draw(ship2);
 
     choice3.setRadius(100);
@@ -288,29 +289,29 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     choice3.setOutlineColor(Color::Red);
     //choice3.setSize(Vector2f(150.0f, 150.0f));  // size for recatngle box 
     choice3.setFillColor(Color::Cyan);       // size of rectangle box 
-    choice3.setPosition(Vector2f(590.0f, 250.0f));
-    circleFillColor(mousePos, choice3, 250, 450, 590, 790);// fill mode1 which is a box, with red colour when cursor is places
+    choice3.setPosition(Vector2f(590.0f, 550.0f));
+    circleFillColor(mousePos, choice3, 550, 750, 590, 790);// fill mode1 which is a box, with red colour when cursor is places
     //mode1.setPosition
     window.draw(choice3);
     Sprite ship3;
     Texture tShip3;
     tShip3.loadFromFile("assets/s_ship.png");
     ship3.setTexture(tShip3);
-    ship3.setPosition(Vector2f(650.0f, 300.0f));
+    ship3.setPosition(Vector2f(650.0f, 600.0f));
     window.draw(ship3);
-    window.waitEvent(event);
+   // window.waitEvent(event);
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
         mousePos = Mouse::getPosition(window);
-        if (mousePos.y >= 250.0f && mousePos.y <= 450.0f && mousePos.x >= 130.0f && mousePos.x <= 330.0f) {
+        if (mousePos.y >= 550.0f && mousePos.y <= 750.0f && mousePos.x >= 130.0f && mousePos.x <= 330.0f) {
             mainMenuChoice = 8; 
             selectionMenuChoice = 1; 
         }
-        if (mousePos.y >= 250.0f && mousePos.y <= 450.0f && mousePos.x >= 360.0f && mousePos.x <= 560.0f) {
+        if (mousePos.y >= 550.0f && mousePos.y <= 750.0f && mousePos.x >= 360.0f && mousePos.x <= 560.0f) {
             mainMenuChoice = 8;
             selectionMenuChoice = 2;
         }
-        if (mousePos.y >= 250.0f && mousePos.y <= 450.0f && mousePos.x >= 590.0f && mousePos.x <= 790.0f) {
+        if (mousePos.y >= 550.0f && mousePos.y <= 750.0f && mousePos.x >= 590.0f && mousePos.x <= 790.0f) {
             mainMenuChoice = 8;
             selectionMenuChoice = 3;
         }
