@@ -27,6 +27,62 @@ void drawBackground(RenderWindow& window, vector<Sprite>& backgrounds) {
     for (int i = 0; i < backgrounds.size(); i++)
         window.draw(backgrounds[i]);
 }
+void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice, int& bgTimer, vector<Sprite>& backgrounds, Sprite& background)
+{
+    ifstream creditsR("txt/credits.txt");
+    int posX = 00, posY = 850;
+    int fontSize = 20;
+    Text text[32];
+    string line[32];
+    Font font;
+    font.loadFromFile("fonts/IceCold.ttf");
+    int q = 0;
+    while (getline(creditsR, line[q])) // Fix: use getline directly instead of checking eof()
+    {
+        q++;
+    }
+    // will load sentences from file
+
+    for (int i = 0; i < 32; i++)
+    {
+        text[i].setCharacterSize(25);
+        text[i].setLetterSpacing(1);
+        text[i].setFont(font);
+        text[i].setString(line[i]);
+        text[i].setOutlineThickness(3);
+        text[i].setOutlineColor(Color::White);
+        text[i].setFillColor(Color::Red);
+        text[i].setPosition(posX, posY);
+        posY += 30;
+    }
+
+    // Start the animation
+    posY = 900;
+    int i = 0;
+    int sizeOfLoop = 32;// it will increase every time loop iterates because every time more text will be displayed on screen than previous
+    while (window.isOpen())
+    {
+        window.clear();
+        updateBackground(bgTimer, backgrounds, background);
+        drawBackground(window, backgrounds);
+        for (int i = 0; i < 32; i++) {
+
+            //text[i].move(text[i].getPosition().x, text[i].getPosition().y - 30);
+            text[i].setPosition(text[i].getPosition().x, text[i].getPosition().y - 1);
+            window.draw(text[i]);
+            //sleep(milliseconds(20));
+            
+        }
+
+        exitButton(window, event, mainMenuChoice);
+        window.display();
+        //sleep(milliseconds(100));
+        if (mainMenuChoice == 0) break;
+
+    }
+
+    creditsR.close(); // Fix: close the file after reading
+}
 int main()
 {
    /* cout << mousePos.x << "\t\t";
@@ -47,20 +103,34 @@ int main()
     ///choices///
     int mainMenuChoice = 0, selectionMenuChoice;
     bool modeMenuChoice = 0;
+    SoundBuffer buffer;
+    Sound sound;
+    buffer.loadFromFile("sound.wav");
+    sound.setBuffer(buffer);
+    sound.play();
+
+
     while (window.isOpen())
     {
         static int i = 0;
-        if(i++ == 0)  welcomeScreen(window);    
+        if (i++ == 0) {
+            buffer.loadFromFile("sounds/intro_sound.wav");
+            sound.setBuffer(buffer);
+            sound.play();
+            welcomeScreen(window);
+        }
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
             {
                 window.close();
             }
         }    
-        window.clear();  
         //backgroundAnimation(window);
-        updateBackground(bgTimer, backgrounds, background);
-        drawBackground(window, backgrounds);
+        if (mainMenuChoice != 3) {
+        window.clear();  
+            updateBackground(bgTimer, backgrounds, background);
+            drawBackground(window, backgrounds);
+        }
 
         if (mainMenuChoice == 0) {
 
@@ -125,9 +195,8 @@ int main()
         }
         else if (mainMenuChoice == 3) // will go in credits screen
         {
-          // string name = getPlayerName(window,event);
-            endingScreen(window, event,"YOU LOST!");
-            //creditScreen(window, event, mainMenuChoice);
+            window.clear();
+            creditScreen(window, event, mainMenuChoice, bgTimer, backgrounds, background);
             cout << mainMenuChoice << endl;
             //mainMenuChoice = 0;
         }
