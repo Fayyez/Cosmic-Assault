@@ -10,7 +10,8 @@ void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
 {
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
-
+    Music click;
+    click.openFromFile("click.ogg");
     Texture EBtexture;    // texture for exit button
     EBtexture.loadFromFile("assets/EXIT.png");
     Sprite exitbutton;      // sprite fro exit button
@@ -20,9 +21,11 @@ void exitButton(RenderWindow& window,Event & event,int& mainMenuChoice)
     // if clicks at exit button then moves to mainmenu screen
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
+        click.play();
         if (mousePos.y >= 40.0f && mousePos.y <= 100.0f && mousePos.x >= 838.0f && mousePos.x <= 898.0f)
         {
             mainMenuChoice = 0;
+            click.play();
         }
     }
 }
@@ -84,6 +87,8 @@ void textFillColor(Vector2i mousePos,Text & text, int y_i, int y_f, int x_i, int
 void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
 {
     displayHeading(window, "  MAIN MENU");
+    Music click;
+    click.openFromFile("click.ogg");
     Vector2i mousePos;// defining to determine and handle mouse coordinates on window, it refers Mouse Position
     mousePos = Mouse::getPosition(window);
     cout << mousePos.x << "    " << mousePos.y << endl;
@@ -133,18 +138,25 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     // below will get mouse input and update menuchoice accoring click for next screen
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
+    click.play();
         mousePos = Mouse::getPosition(window);
         if (mousePos.y >= 165.0f && mousePos.y <= 225.0f && mousePos.x >= 280.0f && mousePos.x <= 620.0f) mainMenuChoice = 1;
         if (mousePos.y >= 295.0f && mousePos.y <= 355.0f && mousePos.x >= 210.0f && mousePos.x <= 691.0f) mainMenuChoice = 2;
         if (mousePos.y >= 435.0f && mousePos.y <= 495.0f && mousePos.x >= 310.0f && mousePos.x <= 590.0f) mainMenuChoice = 3;
         if (mousePos.y >= 575.0f && mousePos.y <= 635.0f && mousePos.x >= 230.0f && mousePos.x <= 691.0f) mainMenuChoice = 4;
+     
     }
-    if(mainMenuChoice!=0)  animate(window, event, spaceShip);
+    if (mainMenuChoice != 0) {
+        click.play();
+        animate(window, event, spaceShip);
+    }
 
 }
 void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & modeMenuChoice)
 {
     displayHeading(window, " MODE MENU");
+    Music click;
+    click.openFromFile("click.ogg");
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
     Font font;
@@ -181,14 +193,17 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
     // mouse user input for mode selection 
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
+        click.play();
         mousePos = Mouse::getPosition(window);
         if (mousePos.y >= 250.0f && mousePos.y <= 302.0f && mousePos.x >= 330.0f && mousePos.x <= 680.0f) {
             modeMenuChoice = 0;
             mainMenuChoice = 7;
+            click.play();
         }
         if (mousePos.y >= 350.0f && mousePos.y <= 400.0f && mousePos.x >= 330.0f && mousePos.x <= 680.0f) {
             modeMenuChoice = 1;
             mainMenuChoice = 7;
+            click.play();
         }
        
     }
@@ -241,7 +256,10 @@ void welcomeScreen(RenderWindow& window)
 }
 void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int& selectionMenuChoice)
 {
+    
     displayHeading(window,"Select Ship");
+    Music click;
+    click.openFromFile("click.ogg");
     Vector2i mousePos;
     mousePos = Mouse::getPosition(window);
     // if clicks at exit button then moves to mainmenu screen
@@ -249,6 +267,7 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     {
         if (mousePos.y >= 700.0f && mousePos.y <= 830.0f && mousePos.x >= 75.0f && mousePos.x <= 296.0f)
         {
+            click.play();
             mainMenuChoice = 0;
         }
     }
@@ -304,18 +323,22 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
    // window.waitEvent(event);
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
+       
         mousePos = Mouse::getPosition(window);
         if (mousePos.y >= 550.0f && mousePos.y <= 750.0f && mousePos.x >= 130.0f && mousePos.x <= 330.0f) {
             mainMenuChoice = 8; 
             selectionMenuChoice = 1; 
+            click.play();
         }
         if (mousePos.y >= 550.0f && mousePos.y <= 750.0f && mousePos.x >= 360.0f && mousePos.x <= 560.0f) {
             mainMenuChoice = 8;
             selectionMenuChoice = 2;
+            click.play();
         }
         if (mousePos.y >= 550.0f && mousePos.y <= 750.0f && mousePos.x >= 590.0f && mousePos.x <= 790.0f) {
             mainMenuChoice = 8;
             selectionMenuChoice = 3;
+            click.play();
         }
     }
     exitButton(window, event, mainMenuChoice);

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "screens.h"
 #include "spacecraftAndBullet.h"
 #include "playGame.h"
@@ -102,21 +103,23 @@ int main()
     ///choices///
     int mainMenuChoice = 0, selectionMenuChoice;
     bool modeMenuChoice = 0;
-    SoundBuffer buffer;
-    Sound sound;
-    bool mainMenuSong = 0, leaderBoardSong = 0, creditScreenSong = 0;
+    SoundBuffer introBuffer,mainBuffer;
+    Sound introSound, mainSound;
+    introBuffer.loadFromFile("sounds/intro_sound.wav");
+    introSound.setBuffer(introBuffer);
+    bool mainMenuSong = 0;
     bool playGameSong = 0;
-    Music mainSong;
-    mainSong.openFromFile("muaic/chef.wav");
-    Music track2;
-    track2.openFromFile("pink_panther.wav");
+    Music musicTrack;
+    musicTrack.openFromFile("tomjerry.ogg");
+    Music leaderboardTrack;
+    leaderboardTrack.openFromFile("standupforchampion.ogg");
+    Music creditTrack;
+    creditTrack.openFromFile("pink_panther_credit.ogg");
     while (window.isOpen())
     {
         static int i = 0;
         if (i++ == 0) {
-            buffer.loadFromFile("sounds/intro_sound.wav");
-            sound.setBuffer(buffer);
-            sound.play();
+            introSound.play();
             welcomeScreen(window);
         }
         while (window.pollEvent(event)) {
@@ -124,16 +127,15 @@ int main()
             {
                 window.close();
             }
-        }    
-        if (mainSong.getStatus() == Music::Stopped)
-        {
-            mainSong.play();
-            track2.play();
+        }
+        if (!(musicTrack.getStatus()==Music::Playing)) {
+            musicTrack.play();
+          //  mainMenuSong = 1;
         }
 
         //backgroundAnimation(window);
         if (mainMenuChoice != 3) {
-        window.clear();  
+            window.clear();
             updateBackground(bgTimer, backgrounds, background);
             drawBackground(window, backgrounds);
         }
@@ -148,9 +150,9 @@ int main()
             window.clear();
             updateBackground(bgTimer, backgrounds, background);
             drawBackground(window, backgrounds);
-            modeMenu(window, event,mainMenuChoice,modeMenuChoice);
+            modeMenu(window, event, mainMenuChoice, modeMenuChoice);
             cout << mainMenuChoice << endl;
-           // choice = 1;
+            // choice = 1;
         }
         if (mainMenuChoice == 7) {
 
@@ -162,12 +164,17 @@ int main()
         }
         if (mainMenuChoice == 8) {//play game
 
-            PLayGame* game = new PLayGame(modeMenuChoice,selectionMenuChoice);
+            if(musicTrack.getStatus()==Music::Playing) musicTrack.stop();
+            Music Game;
+            Game.openFromFile("ChebKhalid.ogg");
+            Game.play();
+            PLayGame* game = new PLayGame(modeMenuChoice, selectionMenuChoice);
             do {
+                if (Game.getStatus() == Music::Stopped) Game.play();
                 window.clear();
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
-                game->play(window,event);
+                game->play(window, event);
                 window.display();
 
             } while (!game->getWon() && !game->getLose());
@@ -180,7 +187,7 @@ int main()
                 drawBackground(window, backgrounds);
                 endingScreen(window, event, "GAME WON!");
             }
-            else if(game->getLose()) {
+            else if (game->getLose()) {
                 mainMenuChoice = 0;
                 window.clear();
                 updateBackground(bgTimer, backgrounds, background);
@@ -189,36 +196,51 @@ int main()
             }
             cout << "Pleeeeyy\n";
             delete game;
+
+            Game.stop();
         }
+             
+            if (musicTrack.getStatus() == Music::Stopped()) musicTrack.play();
         else if (mainMenuChoice == 2)    // will go in leaderboard
         {
+            musicTrack.stop();
+            if (leaderboardTrack.getStatus() == Music::Stopped) leaderboardTrack.play();
             window.clear();
             updateBackground(bgTimer, backgrounds, background);
             drawBackground(window, backgrounds);
-            leaderBoard(window,event, mainMenuChoice);
+            leaderBoard(window, event, mainMenuChoice);
             cout << mainMenuChoice << endl;
-         //   mainMenuChoice = 0;
+            if (mainMenuChoice == 0) {
+                leaderboardTrack.stop();
+                musicTrack.play();
+            }
         }
-        else if (mainMenuChoice == 3) // will go in credits screen
-        {
-            window.clear();
-            creditScreen(window, event, mainMenuChoice, bgTimer, backgrounds, background);
-            cout << mainMenuChoice << endl;
-            //mainMenuChoice = 0;
+            else if (mainMenuChoice == 3) // will go in credits screen
+            {
+                musicTrack.stop();
+                if (creditTrack.getStatus() == Music::Stopped) creditTrack.play();
+                window.clear();
+                creditScreen(window, event, mainMenuChoice, bgTimer, backgrounds, background);
+                cout << mainMenuChoice << endl;
+                if (mainMenuChoice == 0) {
+                    creditTrack.stop();
+                    musicTrack.play();
+                }
+                //mainMenuChoice = 0;
+            }
+            else if (mainMenuChoice == 4) // will go to instruction screen
+            {
+                instructions(window, event, mainMenuChoice);
+                cout << mainMenuChoice << endl;
+                //mainMenuChoice = 0;
+            }
+
+
+            window.display();
         }
-        else if (mainMenuChoice == 4) // will go to instruction screen
-        {
-            instructions(window, event, mainMenuChoice);
-            cout << mainMenuChoice << endl; 
-            //mainMenuChoice = 0;
-        }
 
-
-        window.display();
-    }
-
-
-
+    
+    
 	system("pause");
 	return 0;
 }
