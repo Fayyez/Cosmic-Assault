@@ -476,8 +476,8 @@ void leaderBoard(RenderWindow& window, Event& event, int& mainMenuChoice)
     Text scores[7];
     for (int j = 0; j < 7; j++)
     {
-        scores[j].setCharacterSize(30);
-        scores[j].setLetterSpacing(3);
+        scores[j].setCharacterSize(25);
+        scores[j].setLetterSpacing(2);
         scores[j].setFont(font);
         scores[j].setString(arr[j]);
         scores[j].setOutlineThickness(3);
@@ -490,60 +490,7 @@ void leaderBoard(RenderWindow& window, Event& event, int& mainMenuChoice)
     exitButton(window, event, mainMenuChoice);
 
 }
-void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
-{
-    ifstream creditsR("txt/credits.txt");
-    int posX = 300, posY = 850;
-    int fontSize = 20;
-    Text text[20];
-    string line[20];
-    Font font;
-    font.loadFromFile("res/IceCold.ttf");
-    int q = 0;
-    while (getline(creditsR, line[q])) // Fix: use getline directly instead of checking eof()
-    {
-        q++;
-    }
-    // will load sentences from file
 
-    for (int i = 0; i < 20; i++)
-    {
-        text[i].setCharacterSize(50);
-        text[i].setLetterSpacing(3);
-        text[i].setFont(font);
-        text[i].setString(line[i]);
-        text[i].setOutlineThickness(3);
-        text[i].setOutlineColor(Color::White);
-        text[i].setFillColor(Color::Red);
-        text[i].setPosition(posX, posY);
-        posY += 30;
-    }
-
-    // Start the animation
-    posY = 900;
-    int i = 0;
-    int sizeOfLoop=20;// it will increase every time loop iterates because every time more text will be displayed on screen than previous
-    while (window.isOpen())
-    {
-        window.clear();
-        for (int i = 0; i < 20; i++) {
-            if (text[i].getPosition().y < 900) {
-                text[i].setPosition(text[i].getPosition().x + 10, text[i].getPosition().y - 30);
-                text[i].setCharacterSize(text[i].getCharacterSize() - 5);
-            }
-            text[i].setPosition(text[i].getPosition().x, text[i].getPosition().y - 30);
-            window.draw(text[i]);
-            sleep(milliseconds(30));
-        }
-          
-        exitButton(window, event, mainMenuChoice);
-        window.display();
-        if (mainMenuChoice == 0) break;
-       
-    }
-
-    creditsR.close(); // Fix: close the file after reading
-}
 
 
 
