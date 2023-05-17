@@ -9,7 +9,7 @@
 using namespace sf;
 using namespace std;
 
-class PLayGame {
+class PlayGame {
 
 	int score;//stores current score of user, adds 50 for every successful kill
 	int currentLevel;//it starts with level 0 and is incrementd for each enemy formation that is called
@@ -39,19 +39,20 @@ class PLayGame {
 
 public:
 
-	PLayGame(bool mode, int craftChoice);//starts with level 0 for beginner & 2 for expert
+	PlayGame(bool mode, int craftChoice);//starts with level 0 for beginner & 2 for expert
 	void setSpeed(int s);
 	void setWon(bool status);
 	bool getLose() const;
 	bool getWon() const;
 	bool playerIsDead();
 	bool sessionCompleted();
+	void printStats(RenderWindow& window);
 	bool formationIsKilled();//if formation is killed, level is incremented
 	void createEnemy(int type, int xFinal, int yFinal);
 	void createFormation(bool& status);//fills formation[][] according to level every 30sec
 	bool checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window);
 	bool checkCollisionWithAllBullets(RenderWindow& window);//collision detection for wadibala
 	void moveFormationNormally(int currentSize);//move the enemy formation and also saves the rightmost and leftmost enemy at any given time
-	void play(RenderWindow&window,Event&event);//main method where game  is played;
-	~PLayGame();//should empty all the vectors and delete player and bigBoss
+	void play(RenderWindow&window,Event&event, int& mainMenuChoice);//main method where game  is played;
+	~PlayGame();//should empty all the vectors and delete player and bigBoss
 };

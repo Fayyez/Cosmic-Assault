@@ -168,13 +168,13 @@ int main()
             Music Game;
             Game.openFromFile("ChebKhalid.ogg");
             Game.play();
-            PLayGame* game = new PLayGame(modeMenuChoice, selectionMenuChoice);
+            PlayGame* game = new PlayGame(modeMenuChoice, selectionMenuChoice);
             do {
                 if (Game.getStatus() == Music::Stopped) Game.play();
                 window.clear();
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
-                game->play(window, event);
+                game->play(window, event, mainMenuChoice);
                 window.display();
 
             } while (!game->getWon() && !game->getLose());

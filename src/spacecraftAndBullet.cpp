@@ -227,10 +227,12 @@ Sprite& Bullet::getSprite() { return bulletSprite; }
 void Bullet::move() {
 
     if (type == 1) {//verticle movement
-        if (isFriendly) {
-            bulletSprite.move(0, -6);//for user bullets
+        if (isFriendly)
+        {
+            bulletSprite.move(0, -9);//for user bullets
         }
-        else {
+        else
+        {
             bulletSprite.move(0, 6);//for enemy bullets
         }
     }
