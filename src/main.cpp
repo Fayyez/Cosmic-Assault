@@ -4,6 +4,7 @@
 #include "spacecraftAndBullet.h"
 #include "playGame.h"
 #include <fstream>
+#include <windows.h>
 
 using namespace std;
 using namespace sf;
@@ -66,12 +67,10 @@ void creditScreen(RenderWindow& window, Event& event, int& mainMenuChoice, int& 
         updateBackground(bgTimer, backgrounds, background);
         drawBackground(window, backgrounds);
         for (int i = 0; i < 32; i++) {
-
             //text[i].move(text[i].getPosition().x, text[i].getPosition().y - 30);
             text[i].setPosition(text[i].getPosition().x, text[i].getPosition().y - 1);
             window.draw(text[i]);
-            //sleep(milliseconds(20));
-            
+            //sleep(milliseconds(20));   
         }
 
         exitButton(window, event, mainMenuChoice);
@@ -105,11 +104,12 @@ int main()
     bool modeMenuChoice = 0;
     SoundBuffer buffer;
     Sound sound;
-    buffer.loadFromFile("sound.wav");
-    sound.setBuffer(buffer);
-    sound.play();
-
-
+    bool mainMenuSong = 0, leaderBoardSong = 0, creditScreenSong = 0;
+    bool playGameSong = 0;
+    Music mainSong;
+    mainSong.openFromFile("muaic/chef.wav");
+    Music track2;
+    track2.openFromFile("pink_panther.wav");
     while (window.isOpen())
     {
         static int i = 0;
@@ -125,6 +125,12 @@ int main()
                 window.close();
             }
         }    
+        if (mainSong.getStatus() == Music::Stopped)
+        {
+            mainSong.play();
+            track2.play();
+        }
+
         //backgroundAnimation(window);
         if (mainMenuChoice != 3) {
         window.clear();  
