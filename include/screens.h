@@ -19,3 +19,4 @@ void instructions(RenderWindow& window, Event& event, int& mainMenuChoice);
 void displayHeading(RenderWindow& window, string heading);
 void endingScreen(RenderWindow& window, Event& event,string text);
 string getPlayerName(RenderWindow& window, Event& event);
+void printEscape(RenderWindow& window);

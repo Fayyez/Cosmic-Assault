@@ -305,7 +305,6 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice)
     /////////player movement-&-collision checks/////////
     player->draw(window);
     printStats(window);
-    exitButton(window, event, mainMenuChoice);
     if (player->getReached() == 0)
     { // if player hasn't reached its destination
         player->moveToInitial();

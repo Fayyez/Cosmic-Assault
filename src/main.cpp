@@ -170,12 +170,20 @@ int main()
             Game.play();
             PlayGame* game = new PlayGame(modeMenuChoice, selectionMenuChoice);
             do {
-                if (Game.getStatus() == Music::Stopped) Game.play();
+               if (Game.getStatus() == Music::Stopped) Game.play();
                 window.clear();
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
                 game->play(window, event, mainMenuChoice);
+                printEscape(window);
+                if (Keyboard::isKeyPressed(Keyboard::Escape))
+                {
+                    mainMenuChoice = 0;
+                    break;
+                }
+
                 window.display();
+              
 
             } while (!game->getWon() && !game->getLose());
 
@@ -197,23 +205,17 @@ int main()
             cout << "Pleeeeyy\n";
             delete game;
 
-            Game.stop();
+           Game.stop();
         }
              
-            if (musicTrack.getStatus() == Music::Stopped()) musicTrack.play();
+        if (musicTrack.getStatus() == Music::Stopped()) musicTrack.play();
         else if (mainMenuChoice == 2)    // will go in leaderboard
         {
-            musicTrack.stop();
-            if (leaderboardTrack.getStatus() == Music::Stopped) leaderboardTrack.play();
-            window.clear();
             updateBackground(bgTimer, backgrounds, background);
             drawBackground(window, backgrounds);
             leaderBoard(window, event, mainMenuChoice);
             cout << mainMenuChoice << endl;
-            if (mainMenuChoice == 0) {
-                leaderboardTrack.stop();
-                musicTrack.play();
-            }
+          
         }
             else if (mainMenuChoice == 3) // will go in credits screen
             {
