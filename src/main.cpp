@@ -103,10 +103,22 @@ int main()
     ///choices///
     int mainMenuChoice = 0, selectionMenuChoice;
     bool modeMenuChoice = 0;
+    SoundBuffer buffer;
+    Sound sound;
+    buffer.loadFromFile("sound.wav");
+    sound.setBuffer(buffer);
+    sound.play();
+
+
     while (window.isOpen())
     {
         static int i = 0;
-        if(i++ == 0)  welcomeScreen(window);    
+        if (i++ == 0) {
+            buffer.loadFromFile("sounds/intro_sound.wav");
+            sound.setBuffer(buffer);
+            sound.play();
+            welcomeScreen(window);
+        }
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed)
             {

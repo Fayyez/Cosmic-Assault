@@ -85,36 +85,38 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
 {
     displayHeading(window, "  MAIN MENU");
     Vector2i mousePos;// defining to determine and handle mouse coordinates on window, it refers Mouse Position
+    mousePos = Mouse::getPosition(window);
+    cout << mousePos.x << "    " << mousePos.y << endl;
     Font font;
     font.loadFromFile("fonts/IceCold.ttf");  // loading font from a file 
     Text text_1("New Game", font, 50);   //  assigning string to text, setting font which is loaded and 25 is font size
     text_1.setOutlineThickness(2);
     text_1.setOutlineColor(Color::Red);
-    text_1.setPosition(Vector2f(315.0f, 165.0f));
+    text_1.setPosition(Vector2f(280.0f, 165.0f));
     mousePos = Mouse::getPosition(window);
-    textFillColor(mousePos, text_1, 165, 225, 315, 600);// will fill colour of text when cursor will be places on it
+    textFillColor(mousePos, text_1, 165, 225, 280, 620);// will fill colour of text when cursor will be places on it
     window.draw(text_1);
-
+    
     Text text_2("LEADERBOARD", font, 50);   //  assigning string to text, setting font which is loaded and 25 is font size
     text_2.setOutlineThickness(2);
     text_2.setOutlineColor(Color::Red);
-    text_2.setPosition(Vector2f(235.0f, 295.0f));
-    textFillColor(mousePos, text_2, 295, 355, 235, 635);
+    text_2.setPosition(Vector2f(210.0f, 295.0f));
+    textFillColor(mousePos, text_2, 295, 355, 210, 691);
     window.draw(text_2);
 
 
     Text text_3("CREDITS", font, 50);   //  assigning string to text, setting font which is loaded and 25 is font size
     text_3.setOutlineThickness(2);
     text_3.setOutlineColor(Color::Red);
-    text_3.setPosition(Vector2f(330.0f, 435.0f));
-    textFillColor(mousePos, text_3, 435, 495, 330, 566);
+    text_3.setPosition(Vector2f(310.0f, 435.0f));
+    textFillColor(mousePos, text_3, 435, 495, 310, 590);
     window.draw(text_3);
 
     Text text_4("INSTRUCTIONS", font, 50);   //  assigning string to text, setting font which is loaded and 25 is font size
     text_4.setOutlineThickness(2);
     text_4.setOutlineColor(Color::Red);
-    text_4.setPosition(Vector2f(255.0f, 575.0f));
-    textFillColor(mousePos, text_4, 575, 635, 255, 566);
+    text_4.setPosition(Vector2f(230.0f, 575.0f));
+    textFillColor(mousePos, text_4, 575, 635, 230, 691);
     window.draw(text_4);
     static Sprite spaceShip;   // creates ship which will move left write in main screen
     static Texture texShip;     // static used to avoid redeclaration and redifination of ship every time loop reiterrates
@@ -132,10 +134,10 @@ void mainScreen(RenderWindow& window, Event& event, int& mainMenuChoice)
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
     {
         mousePos = Mouse::getPosition(window);
-        if (mousePos.y >= 165.0f && mousePos.y <= 225.0f && mousePos.x >= 315.0f && mousePos.x <= 600.0f) mainMenuChoice = 1;
-        if (mousePos.y >= 295.0f && mousePos.y <= 355.0f && mousePos.x >= 255.0f && mousePos.x <= 655.0f) mainMenuChoice = 2;
-        if (mousePos.y >= 435.0f && mousePos.y <= 495.0f && mousePos.x >= 330.0f && mousePos.x <= 566.0f) mainMenuChoice = 3;
-        if (mousePos.y >= 575.0f && mousePos.y <= 635.0f && mousePos.x >= 255.0f && mousePos.x <= 566.0f) mainMenuChoice = 4;
+        if (mousePos.y >= 165.0f && mousePos.y <= 225.0f && mousePos.x >= 280.0f && mousePos.x <= 620.0f) mainMenuChoice = 1;
+        if (mousePos.y >= 295.0f && mousePos.y <= 355.0f && mousePos.x >= 210.0f && mousePos.x <= 691.0f) mainMenuChoice = 2;
+        if (mousePos.y >= 435.0f && mousePos.y <= 495.0f && mousePos.x >= 310.0f && mousePos.x <= 590.0f) mainMenuChoice = 3;
+        if (mousePos.y >= 575.0f && mousePos.y <= 635.0f && mousePos.x >= 230.0f && mousePos.x <= 691.0f) mainMenuChoice = 4;
     }
     if(mainMenuChoice!=0)  animate(window, event, spaceShip);
 
@@ -152,12 +154,12 @@ void modeMenu(RenderWindow& window, Event& event, int& mainMenuChoice,bool & mod
     mode1.setFillColor(Color::Green);       // size of rectangle box 
     mode1.setPosition(Vector2f(270.0f, 250.0f));
     boxFillColor(mousePos, mode1, 250, 302, 270, 620);// fill mode1 which is a box, with red colour when cursor is places
-    Text textForMode1("Newbie",font,40);     //  text defining for easy mode
+    Text textForMode1("Easy",font,40);     //  text defining for easy mode
     textForMode1.setLetterSpacing(4);
     textForMode1.setOutlineThickness(3);
     textForMode1.setFillColor(Color::Blue);
     textForMode1.setOutlineColor(Color::Black);
-    textForMode1.setPosition(Vector2f(305.0f, 251.0f));
+    textForMode1.setPosition(Vector2f(350.0f, 251.0f));
     //mode1.setPosition
     window.draw(mode1);
     window.draw(textForMode1);
