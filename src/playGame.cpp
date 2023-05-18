@@ -90,16 +90,16 @@ PlayGame::PlayGame(bool mode, int craftChoice)
     string imageName;
     // craft choice of user
     if (craftChoice == 1)
-        imageName = "assets/s_ship.png"; //********//
+        imageName = "assets/sec_ship.png"; //********//
     else if (craftChoice == 2)
         imageName = "assets/s_ship.png";
     else if (craftChoice == 3)
-        imageName = "assets/s_ship.png";
+        imageName = "assets/spaceship.png";
     if (mode)
     { // expert mode
         currentLevel = 2;
         speedOfFormation = 6;
-        player = new Usercraft(370, 1000, 370, 740, imageName, 50); //*****HEALTH PART TO BE IMPLEMENTED*********//
+        player = new Usercraft(370, 1000, 370, 740, imageName, 22); //*****HEALTH PART TO BE IMPLEMENTED*********//
         read = new ifstream("txt/difficult.txt");
     }
     else
@@ -107,7 +107,7 @@ PlayGame::PlayGame(bool mode, int craftChoice)
         currentLevel = 0;
         speedOfFormation = 2;
         ///*********HEALTH PART TO BE IMPLEMENTED&*******************///
-        player = new Usercraft(370, 1000, 370, 740, imageName, 100);
+        player = new Usercraft(370, 1000, 370, 740, imageName, 35);
         read = new ifstream("txt/easy.txt");
     }
     wadiBala = new BigBoss(350, -120, 350, 200);
@@ -133,15 +133,21 @@ bool PlayGame::sessionCompleted()
 }
 void PlayGame::printStats(RenderWindow& window)
 {
-    //font.loadFromFile("fonts/IceCold.ttf"); // loading font from a file
-    //char scorebuffer[16];
+    font.loadFromFile("fonts/IceCold.ttf"); // loading font from a file
+    stringstream scorebuffer;
+    scorebuffer << "score = " << score;
     //snprintf(scorebuffer, sizeof(scorebuffer), "%d", score);
-    //currentScore.setFont(font);
-    //currentScore.setString(ss.str().c_str());
-    //currentScore.setFillColor(Color::Yellow);
-    //currentScore.setCharacterSize(24);
-    //currentScore.setPosition(20.0f, 40.0f);
-    //window.draw(currentScore);
+    currentScore.setFont(font);
+    currentScore.setString(scorebuffer.str().c_str());
+    currentScore.setFillColor(Color::Yellow);
+    currentScore.setCharacterSize(24);
+    currentScore.setPosition(20.0f, 50.0f);
+    window.draw(currentScore);
+    RectangleShape healthBar;
+    healthBar.setSize(Vector2f(player->getHealth()*15, 15.0f));
+    healthBar.setFillColor(Color::Red);
+    healthBar.setPosition(20, 30);
+    window.draw(healthBar);
 }
 bool PlayGame::formationIsKilled()
 { // if formation is killed, level is incremented
@@ -300,7 +306,7 @@ void PlayGame::moveFormationNormally(int currentSize)
         }
     }
 }
-void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Music&shot)
+void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Music&shot, int shipSelection)
 {
 
     /////////player movement-&-collision checks/////////
@@ -317,11 +323,18 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Musi
 
         if (Keyboard::isKeyPressed(Keyboard::Space) && timeFromLastFire >= cooldownTime)
         {
-            shot.openFromFile("pishu.ogg");
+            shot.openFromFile("music/pishu.ogg");
              shot.play();   
             //window.display();
             clockForFiring.restart();
-            bulletArr.push_back(new Bullet(1, 1, player->getX() + 32, player->getY(), "assets/bullet.png"));
+            if (shipSelection == 3)
+            {
+                bulletArr.push_back(new Bullet(1, 1, player->getX() + 32, player->getY(), "assets/milk_bullet.png"));
+            }
+            else
+            {
+                bulletArr.push_back(new Bullet(1, 1, player->getX() + 32, player->getY(), "assets/bullet.png"));
+            }
         }
         if (Keyboard::isKeyPressed(Keyboard::Right) && player->getX() < 810)
         {
@@ -374,7 +387,7 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Musi
                 if (shouldFire(mode))
                 {
                     // will create a non-friendly bullet of type 1
-                    bulletArr.push_back(new Bullet(1, 0, enemyArr[currentSize]->getX() + 20, enemyArr[currentSize]->getY() + 40, "assets/enemy-bullet.png"));
+                    bulletArr.push_back(new Bullet(1, 0, enemyArr[currentSize]->getX() + 20, enemyArr[currentSize]->getY() + 40, "assets/fireball.png"));
                 }
 
                 // moving to initial positions
@@ -445,6 +458,11 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Musi
         else
         {
             // printing on window
+            RectangleShape BalaBar;
+            BalaBar.setSize(Vector2f(wadiBala->getHealth() * 6.67, 15.0f));
+            BalaBar.setFillColor(Color::Red);
+            BalaBar.setPosition(wadiBala->getSprite().getPosition().x, wadiBala->getSprite().getPosition().y - 20);
+            window.draw(BalaBar);
             wadiBala->draw(window);
             // movements
             if (!wadiBala->getReached())
@@ -495,7 +513,7 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Musi
                 int x = 0, y = 0;
                 random_device rd;
                 mt19937 gen(rd());
-                uniform_int_distribution<int> distribution(0, 2);
+                uniform_int_distribution<int> distribution(0, 4);
 
                 // Generate a random number between 0 and 4 (inclusive)
                 int randomFinal = distribution(gen); // will give 0 - 4 randomnly
@@ -504,17 +522,19 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Musi
                 {
 
                 case 0:
-                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
-                    bulletArr.push_back(new Bullet(2, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
-                    bulletArr.push_back(new Bullet(3, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
+                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 42, wadiBala->getY() + 125, "assets/enemy-bullet.png"));
+                    bulletArr.push_back(new Bullet(2, 0, wadiBala->getX() + 42, wadiBala->getY() + 125, "assets/enemy-bullet.png"));
+                    bulletArr.push_back(new Bullet(3, 0, wadiBala->getX() + 42, wadiBala->getY() + 125, "assets/enemy-bullet.png"));
                     break;
                 case 1:
-                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
-                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 35, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
-                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 55, wadiBala->getY() + 130, "assets/enemy-bullet.png"));
+                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 42, wadiBala->getY() + 125, "assets/enemy-bullet.png"));
+                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 32, wadiBala->getY() + 125, "assets/enemy-bullet.png"));
+                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 52, wadiBala->getY() + 125, "assets/enemy-bullet.png"));
                     break;
                 default:
-                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 45, wadiBala->getY() + 130, "assets/sonicBoom.png"));
+                    shot.openFromFile("music/waddi_balaa (3).ogg");
+                    shot.play();
+                    bulletArr.push_back(new Bullet(1, 0, wadiBala->getX() + 41, wadiBala->getY() + 125, "assets/sonicBoom.png"));
                     break;
                 }
             }

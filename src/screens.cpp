@@ -351,7 +351,7 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     //mode1.setPosition
     window.draw(choice1); Sprite ship1;
     Texture tShip1;
-    tShip1.loadFromFile("assets/s_ship.png");
+    tShip1.loadFromFile("assets/sec_ship.png");
     ship1.setTexture(tShip1);
     ship1.setPosition(Vector2f(190.0f, 600.0f));
     window.draw(ship1);
@@ -383,7 +383,7 @@ void selectionMenu(RenderWindow& window, Event& event, int& mainMenuChoice, int&
     window.draw(choice3);
     Sprite ship3;
     Texture tShip3;
-    tShip3.loadFromFile("assets/s_ship.png");
+    tShip3.loadFromFile("assets/spaceship.png");
     ship3.setTexture(tShip3);
     ship3.setPosition(Vector2f(650.0f, 600.0f));
     window.draw(ship3);

@@ -106,7 +106,7 @@ EnemyCraft::~EnemyCraft() {}
 
 ///definitions for EnemyRed///
 EnemyRed::EnemyRed(float x, float y, float xFinal, float yFinal) :
-    EnemyCraft(x, y, xFinal, yFinal, "assets/enemy_ship.png", 2, 3) {
+    EnemyCraft(x, y, xFinal, yFinal, "assets/red_ship.png", 2, 3) {
 }//
 void EnemyRed::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -129,7 +129,7 @@ EnemyRed::~EnemyRed() {}
 
 ///definitions for enemyBlue///
 EnemyBlue::EnemyBlue(float x, float y, float xFinal, float yFinal) :
-    EnemyCraft(x, y, xFinal, yFinal, "assets/enemy_ship.png", 1, 1.5) {
+    EnemyCraft(x, y, xFinal, yFinal, "assets/blue_ship.png", 1, 1.5) {
 }//C health = 1
 void EnemyBlue::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -152,7 +152,7 @@ EnemyBlue::~EnemyBlue() {}
 
 ///definitions for enemyGreen///
 EnemyGreen::EnemyGreen(float x, float y, float xFinal, float yFinal):
-    EnemyCraft(x, y, xFinal, yFinal, "assets/enemy_ship.png", 1, 3) {
+    EnemyCraft(x, y, xFinal, yFinal, "assets/green_ship.png", 1, 3) {
 }
 void EnemyGreen::moveToInitial() {
     float dx = getXFinal() - getX();
@@ -176,7 +176,7 @@ EnemyGreen::~EnemyGreen() {}
 ///definitions for BigBoss///
 BigBoss::BigBoss(float x, float y, float xFinal, float yFinal):
     //Spacecraft(x,y,xFinal,yFinal,"assets/bigBoss.png", 5, 5) {
-    Spacecraft(x,y,xFinal,yFinal,"assets/doggo_villain.png", 5, 1) {
+    Spacecraft(x,y,xFinal,yFinal,"assets/bigBoss.png", 15, 1) {
 }
 void BigBoss::moveToInitial() {
     float dx = getXFinal() - getX();

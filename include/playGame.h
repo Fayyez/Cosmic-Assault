@@ -54,6 +54,6 @@ public:
 	bool checkCollisionWithAllBullets(EnemyCraft* craft, RenderWindow& window);
 	bool checkCollisionWithAllBullets(RenderWindow& window);//collision detection for wadibala
 	void moveFormationNormally(int currentSize);//move the enemy formation and also saves the rightmost and leftmost enemy at any given time
-	void play(RenderWindow&window,Event&event, int& mainMenuChoice,Music&shot);//main method where game  is played;
+	void play(RenderWindow&window,Event&event, int& mainMenuChoice, Music&shot, int shipSelection);//main method where game  is played;
 	~PlayGame();//should empty all the vectors and delete player and bigBoss
 };

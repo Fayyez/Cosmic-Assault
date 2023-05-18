@@ -178,7 +178,7 @@ int main()
                 window.clear();
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
-                game->play(window, event, mainMenuChoice,shot);
+                game->play(window, event, mainMenuChoice, shot, selectionMenuChoice);
                 printEscape(window);
                 if (Keyboard::isKeyPressed(Keyboard::Escape))
                 {
@@ -197,8 +197,8 @@ int main()
                 window.clear();
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
-                endingScreen(window, event, "GAME WON!");
                 woon.play();
+                endingScreen(window, event, "GAME WON!");
                 string name = getPlayerName(window, event);
                 int score = game->getScore();
                 updateLeaderboard( name,  score,leaderboard);
@@ -209,8 +209,9 @@ int main()
                 window.clear();
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
-                endingScreen(window, event, "YOU LOST!");
                 loose.play();
+                endingScreen(window, event, "YOU LOST!");
+
             }
             cout << "Pleeeeyy\n";
             delete game;
