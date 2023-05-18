@@ -140,6 +140,10 @@ int main()
             musicTrack.play();
           //  mainMenuSong = 1;
         }
+        if (loose.getStatus() == Music::Playing) {
+            loose.stop();
+            musicTrack.play();
+        }
 
         //backgroundAnimation(window);
         if (mainMenuChoice != 3) {
@@ -248,6 +252,7 @@ int main()
 
 
             window.display();
+            
         }
 
     
