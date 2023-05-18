@@ -115,6 +115,8 @@ int main()
     leaderboardTrack.openFromFile("standupforchampion.ogg");
     Music creditTrack;
     creditTrack.openFromFile("pink_panther_credit.ogg");
+    Music shot;
+    shot.openFromFile("pishu.ogg");
     while (window.isOpen())
     {
         static int i = 0;
@@ -165,16 +167,12 @@ int main()
         if (mainMenuChoice == 8) {//play game
 
             if(musicTrack.getStatus()==Music::Playing) musicTrack.stop();
-            Music Game;
-            Game.openFromFile("ChebKhalid.ogg");
-            Game.play();
             PlayGame* game = new PlayGame(modeMenuChoice, selectionMenuChoice);
             do {
-               if (Game.getStatus() == Music::Stopped) Game.play();
                 window.clear();
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
-                game->play(window, event, mainMenuChoice);
+                game->play(window, event, mainMenuChoice,shot);
                 printEscape(window);
                 if (Keyboard::isKeyPressed(Keyboard::Escape))
                 {
@@ -194,6 +192,7 @@ int main()
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
                 endingScreen(window, event, "GAME WON!");
+               // string name = getPlayerName(window, event);
             }
             else if (game->getLose()) {
                 mainMenuChoice = 0;
@@ -204,8 +203,6 @@ int main()
             }
             cout << "Pleeeeyy\n";
             delete game;
-
-           Game.stop();
         }
              
         if (musicTrack.getStatus() == Music::Stopped()) musicTrack.play();

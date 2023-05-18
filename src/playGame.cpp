@@ -299,7 +299,7 @@ void PlayGame::moveFormationNormally(int currentSize)
         }
     }
 }
-void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice)
+void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Music&shot)
 {
 
     /////////player movement-&-collision checks/////////
@@ -316,6 +316,9 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice)
 
         if (Keyboard::isKeyPressed(Keyboard::Space) && timeFromLastFire >= cooldownTime)
         {
+            shot.openFromFile("pishu.ogg");
+             shot.play();   
+            //window.display();
             clockForFiring.restart();
             bulletArr.push_back(new Bullet(1, 1, player->getX() + 32, player->getY(), "assets/bullet.png"));
         }
