@@ -89,7 +89,7 @@ int main()
    * 
    * 
     cout << mousePos.y << endl;*/
-   
+    vector<pair<string, int>> leaderboard;
     RenderWindow window(VideoMode(900, 900), "Cosmic Assault");
     window.setFramerateLimit(120);
     Event event;
@@ -110,13 +110,19 @@ int main()
     bool mainMenuSong = 0;
     bool playGameSong = 0;
     Music musicTrack;
-    musicTrack.openFromFile("tomjerry.ogg");
+    musicTrack.openFromFile("music/Most-Epic-Music.ogg");
     Music leaderboardTrack;
-    leaderboardTrack.openFromFile("standupforchampion.ogg");
+    leaderboardTrack.openFromFile("music/standupforchampion.ogg");
     Music creditTrack;
-    creditTrack.openFromFile("pink_panther_credit.ogg");
+    creditTrack.openFromFile("music/pink_panther_credit.ogg");
     Music shot;
-    shot.openFromFile("pishu.ogg");
+    shot.openFromFile("music/pishu.ogg");
+    Music woon;
+    woon.openFromFile("music/you-win-tekken.ogg");
+    Music loose;
+    loose.openFromFile("music/Voicy_You-lose-.ogg");
+
+
     while (window.isOpen())
     {
         static int i = 0;
@@ -192,7 +198,11 @@ int main()
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
                 endingScreen(window, event, "GAME WON!");
-               // string name = getPlayerName(window, event);
+                woon.play();
+                string name = getPlayerName(window, event);
+                int score = game->getScore();
+                updateLeaderboard( name,  score,leaderboard);
+                
             }
             else if (game->getLose()) {
                 mainMenuChoice = 0;
@@ -200,6 +210,7 @@ int main()
                 updateBackground(bgTimer, backgrounds, background);
                 drawBackground(window, backgrounds);
                 endingScreen(window, event, "YOU LOST!");
+                loose.play();
             }
             cout << "Pleeeeyy\n";
             delete game;

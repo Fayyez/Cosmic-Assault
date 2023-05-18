@@ -5,6 +5,63 @@
 
 using namespace std;
 using namespace sf;
+void updateLeaderboard(const string& name, int score, vector<pair<string, int>>& leaderboard) {
+    const string playersFile = "txt/players.txt";
+    const string scoresFile = "txt/score.txt";
+    const int maxEntries = 7;
+
+    // Open the files for reading and writing
+    ifstream playersRead(playersFile);
+    ifstream scoresRead(scoresFile);
+    ofstream playersWrite(playersFile);
+    ofstream scoresWrite(scoresFile);
+
+    // Check if the files were opened successfully
+    if (!playersRead || !scoresRead || !playersWrite || !scoresWrite) {
+        cerr << "Error opening files." << endl;
+        return;
+    }
+
+    string player;
+    int txtScore;
+
+    // Read the existing leaderboard entries from the files
+    while (getline(playersRead, player) && scoresRead >> txtScore) {
+        leaderboard.emplace_back(player, txtScore);
+    }
+
+    // Add the new entry to the leaderboard
+    if (leaderboard.size() == maxEntries && score < leaderboard.back().second)
+        return;
+    else
+        leaderboard.emplace_back(name, score);
+
+    // Sort the leaderboard entries in descending order of scores
+    sort(leaderboard.begin(), leaderboard.end(), [](const auto& a, const auto& b) {
+        return a.second > b.second;
+        });
+
+    // Resize the leaderboard to include a maximum of maxEntries
+    leaderboard.resize(min(leaderboard.size(), static_cast<size_t>(maxEntries)));
+
+    // Write the updated leaderboard to the files
+    for (const auto& entry : leaderboard) {
+        playersWrite << entry.first;
+        scoresWrite << entry.second;
+
+        // Add new line after each entry except the last one
+        if (entry != leaderboard.back()) {
+            playersWrite << endl;
+            scoresWrite << endl;
+        }
+    }
+
+    // Close the file streams
+    playersRead.close();
+    scoresRead.close();
+    playersWrite.close();
+    scoresWrite.close();
+}
 void printEscape(RenderWindow& window)
 {
     Vector2i mousePos;

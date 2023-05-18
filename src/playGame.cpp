@@ -115,6 +115,7 @@ PlayGame::PlayGame(bool mode, int craftChoice)
 void PlayGame::setSpeed(int s) { speedOfFormation = s; }
 void PlayGame::setWon(bool status) { won = status; }
 bool PlayGame::getWon() const { return won; }
+int PlayGame::getScore() const { return score; }
 bool PlayGame::getLose() const { return lose; }
 bool PlayGame::playerIsDead()
 {
@@ -538,6 +539,7 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Musi
         {
             // if enemy bullet hits player
             player->setHealth(player->getHealth() - 1);
+            score -= 20;
             // deleting the bullet
             if (bulletArr[i] != nullptr)
             {
@@ -572,12 +574,14 @@ void PlayGame::play(RenderWindow& window, Event& event, int& mainMenuChoice,Musi
         // if no formation + level reached + wadibala is dead -> win
         won = true;
     }
-    else if (player->getHealth() == 0 || lowest != nullptr)
+    else if (player->getHealth() == 0)
     {
-        if (lowest->getY() >= 900)
-            // if player died or enemy ship crossed border
-            lose = true;
+                // if player died or enemy ship crossed border
+                lose = true;
     }
+    else if (lowest != nullptr)
+        if (lowest->getY() >= 900)
+            lose = true;
 }
 PlayGame::~PlayGame()
 {
