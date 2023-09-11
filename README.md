@@ -17,7 +17,7 @@ git clone https://github.com/Fayyez/Cosmic-Assault.git
 2. install SFML libraries v2.6.0 (unless you have them already installed on your system). Visit this [link](https://www.sfml-dev.org/download.php) to download the dependencies.
 3. link the SFML files and configure the project in the IDE of your choice. Some useful links for running on visual studio are:
    + follow official instructions [here](https://www.sfml-dev.org/tutorials/2.6/start-vc.php)
-   + setting up SFML for Visual Studio video (tutorial)[https://www.youtube.com/watch?v=YfMQyOw1zik]
+   + setting up SFML for Visual Studio [video tutorial](https://www.youtube.com/watch?v=YfMQyOw1zik)
      
 ## Contributions
 We welcome contributions from the open-source community to make Cosmic Assault even better. If you'd like to contribute, please follow these guidelines:
