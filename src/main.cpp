@@ -105,7 +105,7 @@ int main()
     bool modeMenuChoice = 0;
     SoundBuffer introBuffer,mainBuffer;
     Sound introSound, mainSound;
-    introBuffer.loadFromFile("sounds/intro_sound.wav");
+    introBuffer.loadFromFile("music/intro_sound.wav");
     introSound.setBuffer(introBuffer);
     bool mainMenuSong = 0;
     bool playGameSong = 0;
