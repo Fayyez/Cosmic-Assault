@@ -9,10 +9,10 @@ Cosmic Assault is an action-packed space shooter game. In this game, you'll navi
 + **Arrow Keys** to maneuver your spacecraft
 + **spacebar** to fire at the enemy!
 
-## Deployement
+## Deployment
 1. clone the repository using:
 ```shell
-git clone https://github.com/Fayyez/Cosmic-Assault.git
+git clone https://github.com/Fayyez/Cosmic-Assault
 ```
 2. install SFML libraries v2.6.0 (unless you have them already installed on your system). Visit this [link](https://www.sfml-dev.org/download.php) to download the dependencies.
 3. link the SFML files and configure the project in the IDE of your choice. Some useful links for running on visual studio are:
